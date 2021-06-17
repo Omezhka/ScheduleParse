@@ -21,6 +21,7 @@ namespace ScheduleParse
 
         static string filePath;
 
+        static string newFileName;
        
         // public static string filePath { get; set; }
 
@@ -40,19 +41,11 @@ namespace ScheduleParse
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     //Get the path of specified file
-                    filePath = openFileDialog.FileName;
-
-                    //Read the contents of the file into a stream
-                    var fileStream = openFileDialog.OpenFile();
-
-                    using (StreamReader reader = new StreamReader(fileStream))
-                    {
-                        string fileContent = reader.ReadToEnd();
-                    }
+                    filePath = openFileDialog.FileName; 
                 }
             }
 
-            MessageBox.Show("load complete", "File Content at path: " + filePath, MessageBoxButtons.OK);
+            MessageBox.Show("filePath: "+ filePath, "File Content at path: " + filePath, MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -80,9 +73,9 @@ namespace ScheduleParse
             }
 
             app.ActiveDocument.Close();
-
-            string filenametxt = path + "1.txt";
-
+            
+            string filenametxt = path + newFileName;
+            
             using (StreamReader sr = new StreamReader(filenametxt, System.Text.Encoding.Default))
             {
                 string line;
@@ -445,8 +438,9 @@ namespace ScheduleParse
         /// </summary>
         private static void Convert2txt(Document doc)
         {
-            string newFileName = doc.FullName.Replace(".doc", ".txt");
-            doc.SaveAs2(path+newFileName, WdSaveFormat.wdFormatText);
+            newFileName = doc.Name.Replace(".doc", ".txt");
+            //string newFileNameSave = Path.GetFileName(newFileName);
+            doc.SaveAs2(path + newFileName, WdSaveFormat.wdFormatText);
         }
     }
 }
