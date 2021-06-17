@@ -35,7 +35,7 @@ namespace ScheduleParse
             this.toolStripMenuItemExtraStud = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMagistr = new System.Windows.Forms.ToolStripMenuItem();
             this.формированиеРасписанияНаСтендToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCreateGeneralSchedule = new System.Windows.Forms.ToolStripMenuItem();
             this.расписаниеПреподовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -86,26 +86,29 @@ namespace ScheduleParse
             this.toolStripMenuItemExtraStud.Name = "toolStripMenuItemExtraStud";
             this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemExtraStud.Text = "Заочная форма";
+            this.toolStripMenuItemExtraStud.Click += new System.EventHandler(this.toolStripMenuItemExtraStud_Click);
             // 
             // toolStripMenuItemMagistr
             // 
             this.toolStripMenuItemMagistr.Name = "toolStripMenuItemMagistr";
             this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemMagistr.Text = "Магистратура";
+            this.toolStripMenuItemMagistr.Click += new System.EventHandler(this.toolStripMenuItemMagistr_Click);
             // 
             // формированиеРасписанияНаСтендToolStripMenuItem
             // 
             this.формированиеРасписанияНаСтендToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItemCreateGeneralSchedule});
             this.формированиеРасписанияНаСтендToolStripMenuItem.Name = "формированиеРасписанияНаСтендToolStripMenuItem";
             this.формированиеРасписанияНаСтендToolStripMenuItem.Size = new System.Drawing.Size(221, 20);
             this.формированиеРасписанияНаСтендToolStripMenuItem.Text = "Формирование расписания на стенд";
             // 
-            // toolStripMenuItem1
+            // toolStripMenuItemCreateGeneralSchedule
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem1.Text = "Сформировать";
+            this.toolStripMenuItemCreateGeneralSchedule.Name = "toolStripMenuItemCreateGeneralSchedule";
+            this.toolStripMenuItemCreateGeneralSchedule.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCreateGeneralSchedule.Text = "Сформировать";
+            this.toolStripMenuItemCreateGeneralSchedule.Click += new System.EventHandler(this.toolStripMenuItemCreateGeneralSchedule_Click);
             // 
             // расписаниеПреподовToolStripMenuItem
             // 
@@ -273,7 +276,7 @@ namespace ScheduleParse
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ToolStripMenuItem формированиеРасписанияНаСтендToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
         private System.Windows.Forms.ToolStripMenuItem расписаниеПреподовToolStripMenuItem;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
