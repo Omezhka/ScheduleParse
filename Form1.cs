@@ -46,16 +46,19 @@ namespace ScheduleParse
         private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
+            label2.Text = DateTime.Now.ToShortDateString();
         }
 
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
+            label6.Text = DateTime.Now.ToShortDateString();
         }
 
         private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
+            label5.Text = DateTime.Now.ToShortDateString();
         }
         
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -64,7 +67,7 @@ namespace ScheduleParse
         }
 
         private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
-        {
+        { 
             app.Visible = true;
             progressBar1.Visible = true;
             MethodsClass.GenerateDocApp(izv, notifications);

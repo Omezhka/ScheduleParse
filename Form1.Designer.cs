@@ -255,9 +255,9 @@ namespace ScheduleParse
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(0, 450);
+            this.progressBar1.Location = new System.Drawing.Point(0, 435);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(526, 27);
+            this.progressBar1.Size = new System.Drawing.Size(526, 17);
             this.progressBar1.TabIndex = 15;
             this.progressBar1.Visible = false;
             // 
@@ -272,7 +272,7 @@ namespace ScheduleParse
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 477);
+            this.ClientSize = new System.Drawing.Size(526, 453);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonFind);
             this.Controls.Add(this.comboBox1);
