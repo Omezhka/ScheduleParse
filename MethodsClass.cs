@@ -17,7 +17,8 @@ namespace ScheduleParse
    public static class MethodsClass
    {
         static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
-        static string pathOutput = AppDomain.CurrentDomain.BaseDirectory + @"outputDocuments\";
+        static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
+        static string pathSavePrepods = pathOutput + @"prepods\";
 
         static string filePath;
 
@@ -195,7 +196,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание общего расписания для стенда
         /// </summary>
-        public static void GeneralSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications)
+        public static void CreateGeneralSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications, IProgress<int> progress)
         {
             var teacherCount = notifications.Count();
             //тут создаю новый док, задаю ему альбомную ориентацию
@@ -219,10 +220,8 @@ namespace ScheduleParse
 
             //тут всё закручено на Range
             Table tbl = docTable.Tables[1];
-            tbl.Range.Font.Size = 9;
-            tbl.Range.Font.Name = "Times New Roman";
-            tbl.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-
+            SettingsFieldTables(tbl);
+           
             //это настройки таблицы
             tbl.Columns.DistributeWidth();
             tbl.Rows[1].Range.Font.Bold = 1;
@@ -244,11 +243,9 @@ namespace ScheduleParse
             {
                 tbl.Cell(i, 1).Range.Text = $"{notifications[i - 2].teacher.position}\r\n{notifications[i - 2].teacher.fullname}";
                 i++;
-                tbl.Cell(i - 1, 1).Range.Font.Bold = 1;
-                tbl.Cell(i - 1, 1).Range.Font.Size = 12;
-                tbl.Cell(i - 1, 1).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                SettingsFirstColumn(tbl, i);
             }
-
+            
             for (int i = 0; i < teacherCount; i++) //столбец
             {
                 for (var k = 0; k < notifications[i].scheduleList.Count; k++) // строка
@@ -273,7 +270,9 @@ namespace ScheduleParse
                                                                                 $"{notifications[i].scheduleList[k].group } " +
                                                                                 $"{"a." + notifications[i].scheduleList[k].audience }\r\n");
                     }
+                    
                 }
+                progress.Report(i*4);
             }
         }
 
@@ -299,7 +298,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание персонального расписания каждого преподавателя
         /// </summary>
-        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications, List<string> week)
+        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications, IProgress<int> progress)
         {
             //app.Visible = false;
             var classhours = new List<string>
@@ -334,10 +333,7 @@ namespace ScheduleParse
                     rngtst.Tables.Add(teacherScheduleTable.Paragraphs[3].Range, classhours.Count + 1, 7, WdDefaultTableBehavior.wdWord9TableBehavior, WdAutoFitBehavior.wdAutoFitWindow);
 
                     Table tbltst = teacherScheduleTable.Tables[1];
-
-                    tbltst.Range.Font.Size = 9;
-                    tbltst.Range.Font.Name = "Times New Roman";
-                    tbltst.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                    SettingsFieldTables(tbltst);
 
                     tbltst.Columns.DistributeWidth();
 
@@ -354,18 +350,34 @@ namespace ScheduleParse
 
                     InsertFirstColumnInTable(classhours, tbltst);
 
-                    InsertDataInPersonalTeacherSchedule(notifications, week, classhours, c, tbltst);
+                    InsertDataInPersonalTeacherSchedule(notifications, classhours, c, tbltst);
+                    DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepods);
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
 
-                    //teacherScheduleTable.SaveAs2(pathOutput + @"prepods\"+ notifications[c].teacher.fullname + ".docx");
-                    c++;
+                    teacherScheduleTable.SaveAs2(pathSavePrepods + notifications[c].teacher.fullname + ".docx");
+                    progress.Report(c * 4);
+                    app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
+                    c++; 
                 }
+               
             }
+            
+            app.Quit();
+        }
+
+        private static void SettingsFieldTables(Table tbltst)
+        {
+            tbltst.Range.Font.Size = 9;
+            tbltst.Range.Font.Name = "Times New Roman";
+            tbltst.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
         }
 
         /// <summary>
         /// Настройки текста перед таблицей
         /// </summary>
-        /// <param name="rngtst"></param>
         private static void SettingsTitle(Range rngtst)
         {
             rngtst.Font.Name = "Times New Roman";
@@ -398,14 +410,14 @@ namespace ScheduleParse
         /// <summary>
         /// Добавление данных в таблицу с индивидуальным расписанием преподавателя
         /// </summary>
-        private static void InsertDataInPersonalTeacherSchedule(List<Notification> notifications, List<string> week, List<string> classhours, int c, Table tbltst)
+        private static void InsertDataInPersonalTeacherSchedule(List<Notification> notifications,  List<string> classhours, int c, Table tbltst)
         {
             for (var k = 0; k < notifications[c].scheduleList.Count; k++) //столбец
             {
                 var indexDayPosition = 0;
                 var indexClasshoursPosition = 0;
 
-                indexDayPosition = week.IndexOf(notifications[c].scheduleList[k].days);
+                indexDayPosition = week().IndexOf(notifications[c].scheduleList[k].days);
                 indexClasshoursPosition = classhours.IndexOf(notifications[c].scheduleList[k].classhours);
 
                 tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;

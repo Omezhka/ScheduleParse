@@ -50,6 +50,8 @@ namespace ScheduleParse
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.buttonFind = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.CreatePersonalScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,6 +117,8 @@ namespace ScheduleParse
             // 
             // расписаниеПреподовToolStripMenuItem
             // 
+            this.расписаниеПреподовToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CreatePersonalScheduleToolStripMenuItem});
             this.расписаниеПреподовToolStripMenuItem.Name = "расписаниеПреподовToolStripMenuItem";
             this.расписаниеПреподовToolStripMenuItem.Size = new System.Drawing.Size(140, 20);
             this.расписаниеПреподовToolStripMenuItem.Text = "Расписание преподов";
@@ -249,11 +253,27 @@ namespace ScheduleParse
             this.buttonFind.Text = "Найти";
             this.buttonFind.UseVisualStyleBackColor = true;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(0, 450);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(526, 27);
+            this.progressBar1.TabIndex = 15;
+            this.progressBar1.Visible = false;
+            // 
+            // CreatePersonalScheduleToolStripMenuItem
+            // 
+            this.CreatePersonalScheduleToolStripMenuItem.Name = "CreatePersonalScheduleToolStripMenuItem";
+            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CreatePersonalScheduleToolStripMenuItem.Text = "Создать";
+            this.CreatePersonalScheduleToolStripMenuItem.Click += new System.EventHandler(this.CreatePersonalScheduleToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 477);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonFind);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox2);
@@ -301,6 +321,8 @@ namespace ScheduleParse
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button buttonFind;
+        public System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ToolStripMenuItem CreatePersonalScheduleToolStripMenuItem;
     }
 }
 

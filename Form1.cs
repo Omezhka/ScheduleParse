@@ -20,12 +20,27 @@ namespace ScheduleParse
         List<Notification> notifications = new List<Notification>();
         List<string> izv = new List<string>();
         //string filename = path + "1.doc";
-        
-
+        static Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+        BackgroundWorker worker = new BackgroundWorker();
         public Form1()
         {
             InitializeComponent();
 
+            worker.WorkerSupportsCancellation = true;
+            worker.WorkerReportsProgress = true;
+
+            worker.ProgressChanged += Worker_ProgressChanged;
+            worker.DoWork += Worker_DoWork;
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            
         }
 
         private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
@@ -48,15 +63,34 @@ namespace ScheduleParse
 
         }
 
-        private void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
+        private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
         {
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
-            {
-                Visible = true
-            };
-
+            app.Visible = true;
+            progressBar1.Visible = true;
             MethodsClass.GenerateDocApp(izv, notifications);
-            MethodsClass.GeneralSchedule(app, notifications);
+            progressBar1.Value = 0;
+            
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notifications, progress));
+            progressBar1.Value = 100;
+            
         }
+
+        private async void CreatePersonalScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            app.Visible = false;
+
+            progressBar1.Visible = true;
+            MethodsClass.GenerateDocApp(izv, notifications);
+            progressBar1.Value = 0;
+
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notifications, progress));
+            progressBar1.Value = 100;
+           
+           
+        }
+        
     }
 }
