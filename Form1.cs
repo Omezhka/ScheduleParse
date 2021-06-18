@@ -26,27 +26,19 @@ namespace ScheduleParse
         {
             InitializeComponent();
 
-            worker.WorkerSupportsCancellation = true;
-            worker.WorkerReportsProgress = true;
-
-            worker.ProgressChanged += Worker_ProgressChanged;
-            worker.DoWork += Worker_DoWork;
-        }
-
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            
         }
 
         private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
+            MethodsClass.GenerateDocApp(izv, notifications);
             label2.Text = DateTime.Now.ToShortDateString();
+            foreach (var item in notifications)
+            {
+                comboBox1.Items.AddRange(new object[]{
+                    item.teacher.fullname
+            });
+            }
         }
 
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
