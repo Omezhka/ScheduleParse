@@ -19,11 +19,15 @@ namespace ScheduleParse
         static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
         static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
         static string pathSavePrepods = pathOutput + @"prepods\";
+        static string pathSaveJSON = pathOutput + @"json\";
 
         static string filePath;
 
         static string newFileName;
-       
+
+        static string writePathJSON;
+        static string json;
+
         // public static string filePath { get; set; }
 
         /// <summary>
@@ -59,10 +63,6 @@ namespace ScheduleParse
                 Visible = false
             };
 
-            //filePath = string.Empty;
-
-           // if (filePath != null) { }
-
             Document doc = app.Documents.OpenNoRepairDialog(filePath);
             try
             {
@@ -94,9 +94,13 @@ namespace ScheduleParse
             var regScheduleItem = new Regex(Pattern.scheduleItem);
             var groupScheduleItemNames = regScheduleItem.GetGroupNames();
 
-            MethodsClass.CreateNotifications(izv, regHeader, i, notifications);
+            CreateNotifications(izv, regHeader, i, notifications);
 
-            MethodsClass.SettingsFieldNotifications(notifications);  
+            SettingsFieldNotifications(notifications);
+
+
+
+            //JsonParse(notifications);
         }
        
         /// <summary>
@@ -166,7 +170,7 @@ namespace ScheduleParse
         /// <summary>
         /// Парсинг в json
         /// </summary>
-        private static void JsonParse(List<Notification> notifications)
+        public static void JsonParse(List<Notification> notifications, string formEdu)
         {
             var options = new JsonSerializerOptions
             {
@@ -174,18 +178,23 @@ namespace ScheduleParse
                 WriteIndented = true
             };
 
-            string json = JsonSerializer.Serialize(notifications, options);
+             json = JsonSerializer.Serialize(notifications, options);
 
-            string writePath = pathOutput + "hta.txt";
+            DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+
+            writePathJSON = pathSaveJSON + formEdu + ".txt";
 
             try
             {
-                using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(writePathJSON, false, System.Text.Encoding.Default))
                 {
                     sw.WriteLine(json);
                 }
 
-                Console.WriteLine("Запись выполнена");
             }
             catch (Exception e)
             {
@@ -193,12 +202,32 @@ namespace ScheduleParse
             }
         }
 
+        public static List<NotificationFromJson> JsonParseDes(string formEdu)
+        {
+            List<NotificationFromJson> notificationFromJson = new List<NotificationFromJson>();
+
+            if (File.Exists(pathSaveJSON + formEdu + ".txt"))
+            {
+                var JSONtxt = File.ReadAllText(pathSaveJSON + formEdu + ".txt", Encoding.Default);
+
+                notificationFromJson = JsonSerializer.Deserialize<List<NotificationFromJson>>(JSONtxt);
+
+            }
+            //foreach (var item in notificationFromJson)
+            //{
+            //    MessageBox.Show(item.teacher.fullname.ToString() + item.teacher.position);
+            //}
+            
+            
+            return notificationFromJson;
+        }
+
         /// <summary>
         /// Создание общего расписания для стенда
         /// </summary>
-        public static void CreateGeneralSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications, IProgress<int> progress)
+        public static void CreateGeneralSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFromJson> notificationFromJson, IProgress<int> progress)
         {
-            var teacherCount = notifications.Count();
+            var teacherCount = notificationFromJson.Count();
             //тут создаю новый док, задаю ему альбомную ориентацию
             Document docTable = app.Documents.Add();
             PageSetupOrientational(docTable);
@@ -241,34 +270,34 @@ namespace ScheduleParse
             
             for (int i = 2; i <= teacherCount + 1;)
             {
-                tbl.Cell(i, 1).Range.Text = $"{notifications[i - 2].teacher.position}\r\n{notifications[i - 2].teacher.fullname}";
+                tbl.Cell(i, 1).Range.Text = $"{notificationFromJson[i - 2].teacher.position}\r\n{notificationFromJson[i - 2].teacher.fullname}";
                 i++;
                 SettingsFirstColumn(tbl, i);
             }
             
             for (int i = 0; i < teacherCount; i++) //столбец
             {
-                for (var k = 0; k < notifications[i].scheduleList.Count; k++) // строка
+                for (var k = 0; k < notificationFromJson[i].scheduleList.Count; k++) // строка
                 {
                     //int indexDayPosition = 0;
 
-                    int indexDayPosition = week().IndexOf(notifications[i].scheduleList[k].days);
+                    int indexDayPosition = week().IndexOf(notificationFromJson[i].scheduleList[k].days);
 
                     tbl.Cell(i + 2, indexDayPosition + 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
 
-                    if (notifications[i].scheduleList[k].Week)
+                    if (notificationFromJson[i].scheduleList[k].Week)
                     {
                         tbl.Cell(i + 2, indexDayPosition + 2).Range.InsertAfter($"{"чет: "}" +
-                                                                                $"{notifications[i].scheduleList[k].classhours } " +
-                                                                                $"{notifications[i].scheduleList[k].group } " +
-                                                                                $"{"a." + notifications[i].scheduleList[k].audience }\r\n");
+                                                                                $"{notificationFromJson[i].scheduleList[k].classhours } " +
+                                                                                $"{notificationFromJson[i].scheduleList[k].group } " +
+                                                                                $"{"a." + notificationFromJson[i].scheduleList[k].audience }\r\n");
                     }
                     else
                     {
                         tbl.Cell(i + 2, indexDayPosition + 2).Range.InsertAfter($"{"нечет: "}" +
-                                                                                $"{notifications[i].scheduleList[k].classhours } " +
-                                                                                $"{notifications[i].scheduleList[k].group } " +
-                                                                                $"{"a." + notifications[i].scheduleList[k].audience }\r\n");
+                                                                                $"{notificationFromJson[i].scheduleList[k].classhours } " +
+                                                                                $"{notificationFromJson[i].scheduleList[k].group } " +
+                                                                                $"{"a." + notificationFromJson[i].scheduleList[k].audience }\r\n");
                     }
                     
                 }

@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="MethodsClass.cs" />
     <Compile Include="Notification.cs" />
+    <Compile Include="NotificationFromJson.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

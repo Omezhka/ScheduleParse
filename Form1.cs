@@ -15,42 +15,72 @@ namespace ScheduleParse
 {
     public partial class Form1 : Form
     {
-        static string path = AppDomain.CurrentDomain.BaseDirectory + @"documents\";
-        static string pathOutput = AppDomain.CurrentDomain.BaseDirectory + @"outputDocuments\";
+
         List<Notification> notifications = new List<Notification>();
         List<string> izv = new List<string>();
-        //string filename = path + "1.doc";
-        static Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-        BackgroundWorker worker = new BackgroundWorker();
+
+        List<NotificationFromJson> notificationFromJson = new List<NotificationFromJson>();
+
+        Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+
+        string jsonFullTimeEdu = "jsonFullTimeEdu";
+        string jsonExtraStudEdu = "jsonExtraStudEdu";
+        string jsonMagistrEdu = "jsonMagistrEdu";
+
         public Form1()
         {
             InitializeComponent();
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+
+            if (notificationFromJson.Count != 0)
+            {
+                foreach (var item in notificationFromJson)
+                {
+                    comboBox1.Items.AddRange(new object[]{
+                    item.teacher.fullname
+                });
+                }
+            }
+            else
+            {
+                comboBox1.Text = "nope";
+            }
+        }
+
+
         private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
+
             MethodsClass.GenerateDocApp(izv, notifications);
+
+
+            MethodsClass.JsonParse(notifications, jsonFullTimeEdu);
+
             label2.Text = DateTime.Now.ToShortDateString();
-            foreach (var item in notifications)
-            {
-                comboBox1.Items.AddRange(new object[]{
-                    item.teacher.fullname
-            });
-            }
+            
+            
         }
 
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
             label6.Text = DateTime.Now.ToShortDateString();
+
+            MethodsClass.JsonParse(notifications, jsonExtraStudEdu);
         }
 
         private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
             label5.Text = DateTime.Now.ToShortDateString();
+
+            MethodsClass.JsonParse(notifications, jsonMagistrEdu);
         }
         
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -62,11 +92,14 @@ namespace ScheduleParse
         { 
             app.Visible = true;
             progressBar1.Visible = true;
-            MethodsClass.GenerateDocApp(izv, notifications);
+            //MethodsClass.GenerateDocApp(izv, notifications);
             progressBar1.Value = 0;
-            
+
+
+            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+
             var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notifications, progress));
+            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notificationFromJson, progress));
             progressBar1.Value = 100;
             
         }
@@ -86,6 +119,7 @@ namespace ScheduleParse
            
            
         }
+
         
     }
 }
