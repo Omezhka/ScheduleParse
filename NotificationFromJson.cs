@@ -18,7 +18,5 @@ namespace ScheduleParse
         /// </summary>
         public List<Schedule> scheduleList { get; set; }
 
-       
-
     }
 }

@@ -12,6 +12,7 @@ using System.Text.Unicode;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace ScheduleParse
 {
    public static class MethodsClass
@@ -29,6 +30,9 @@ namespace ScheduleParse
         static string json;
 
         // public static string filePath { get; set; }
+
+        
+
 
         /// <summary>
         /// Открытие проводника и загрузка документов
@@ -170,7 +174,7 @@ namespace ScheduleParse
         /// <summary>
         /// Парсинг в json
         /// </summary>
-        public static void JsonParse(List<Notification> notifications, string formEdu)
+        public static void JsonParse(List<Notification> notifications, string formEdu, Form1 form)
         {
             var options = new JsonSerializerOptions
             {
@@ -200,6 +204,21 @@ namespace ScheduleParse
             {
                 Console.WriteLine(e.Message);
             }
+            FillingComboBox(JsonParseDes(formEdu), formEdu, form);
+        }
+
+        static public void FillingComboBox(List<NotificationFromJson> notificationFromJson, string formEdu, Form1 form)
+        {
+
+            if (notificationFromJson.Count == 0) { notificationFromJson = MethodsClass.JsonParseDes(formEdu); }
+
+            foreach (var item in notificationFromJson)
+            {
+                form.comboBox1.Items.Add(item.teacher.fullname.ToString());
+            }
+            form.comboBox1.Enabled = true;
+            form.comboBox1.SelectedItem = form.comboBox1.Items[0];
+
         }
 
         public static List<NotificationFromJson> JsonParseDes(string formEdu)
@@ -330,15 +349,7 @@ namespace ScheduleParse
         public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications, IProgress<int> progress)
         {
             //app.Visible = false;
-            var classhours = new List<string>
-            {
-                    "08.30-10.00",
-                    "10.10-11.40",
-                    "11.50-13.20",
-                    "13.50-15.20",
-                    "15.30-17.00",
-                    "17.10-18.40"
-            };
+            List<string> classhours = Classhours();
 
             int c = 0;
 
@@ -389,12 +400,25 @@ namespace ScheduleParse
                     teacherScheduleTable.SaveAs2(pathSavePrepods + notifications[c].teacher.fullname + ".docx");
                     progress.Report(c * 4);
                     app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
-                    c++; 
+                    c++;
                 }
-               
+
             }
-            
+
             app.Quit();
+        }
+
+        private static List<string> Classhours()
+        {
+            return new List<string>
+            {
+                    "08.30-10.00",
+                    "10.10-11.40",
+                    "11.50-13.20",
+                    "13.50-15.20",
+                    "15.30-17.00",
+                    "17.10-18.40"
+            };
         }
 
         private static void SettingsFieldTables(Table tbltst)

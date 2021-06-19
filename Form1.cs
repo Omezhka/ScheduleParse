@@ -27,6 +27,7 @@ namespace ScheduleParse
         string jsonExtraStudEdu = "jsonExtraStudEdu";
         string jsonMagistrEdu = "jsonMagistrEdu";
 
+
         public Form1()
         {
             InitializeComponent();
@@ -35,24 +36,24 @@ namespace ScheduleParse
 
         private void Form1_Load(object sender, EventArgs e)
         {
+           listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
             if (notificationFromJson.Count != 0)
             {
-                foreach (var item in notificationFromJson)
-                {
-                    comboBox1.Items.AddRange(new object[]{
-                    item.teacher.fullname
-                });
-                }
+                MethodsClass.FillingComboBox(notificationFromJson, jsonFullTimeEdu, this);
             }
             else
             {
-                comboBox1.Text = "nope";
+                comboBox1.Text = "Не загружено расписание";
+                comboBox1.Enabled = false;
             }
+
         }
 
-
+        
         private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
@@ -60,7 +61,7 @@ namespace ScheduleParse
             MethodsClass.GenerateDocApp(izv, notifications);
 
 
-            MethodsClass.JsonParse(notifications, jsonFullTimeEdu);
+            MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);
 
             label2.Text = DateTime.Now.ToShortDateString();
             
@@ -72,7 +73,7 @@ namespace ScheduleParse
             MethodsClass.LoadFiles();
             label6.Text = DateTime.Now.ToShortDateString();
 
-            MethodsClass.JsonParse(notifications, jsonExtraStudEdu);
+            MethodsClass.JsonParse(notifications, jsonExtraStudEdu, this);
         }
 
         private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
@@ -80,13 +81,10 @@ namespace ScheduleParse
             MethodsClass.LoadFiles();
             label5.Text = DateTime.Now.ToShortDateString();
 
-            MethodsClass.JsonParse(notifications, jsonMagistrEdu);
+            MethodsClass.JsonParse(notifications, jsonMagistrEdu, this);
         }
         
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
         { 
@@ -120,6 +118,9 @@ namespace ScheduleParse
            
         }
 
-        
+        private void toolStripMenuItemUpdate_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
