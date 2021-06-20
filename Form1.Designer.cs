@@ -41,22 +41,18 @@ namespace ScheduleParse
             this.CreatePersonalScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.buttonFind = new System.Windows.Forms.Button();
+            this.listViewScheduleTeacher = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewScheduleTeacher = new System.Windows.Forms.ListView();
+            this.buttonFindFullTimeEdu = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -66,6 +62,9 @@ namespace ScheduleParse
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -77,6 +76,7 @@ namespace ScheduleParse
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -107,26 +107,25 @@ namespace ScheduleParse
             this.toolStripMenuItemUpdate.Name = "toolStripMenuItemUpdate";
             this.toolStripMenuItemUpdate.Size = new System.Drawing.Size(156, 20);
             this.toolStripMenuItemUpdate.Text = "Обновление расписания";
-            this.toolStripMenuItemUpdate.Click += new System.EventHandler(this.toolStripMenuItemUpdate_Click);
             // 
             // toolStripMenuItemFullTimeEdu
             // 
             this.toolStripMenuItemFullTimeEdu.Name = "toolStripMenuItemFullTimeEdu";
-            this.toolStripMenuItemFullTimeEdu.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemFullTimeEdu.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemFullTimeEdu.Text = "Очная форма";
             this.toolStripMenuItemFullTimeEdu.Click += new System.EventHandler(this.toolStripMenuItemFullTimeEdu_Click);
             // 
             // toolStripMenuItemExtraStud
             // 
             this.toolStripMenuItemExtraStud.Name = "toolStripMenuItemExtraStud";
-            this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemExtraStud.Text = "Заочная форма";
             this.toolStripMenuItemExtraStud.Click += new System.EventHandler(this.toolStripMenuItemExtraStud_Click);
             // 
             // toolStripMenuItemMagistr
             // 
             this.toolStripMenuItemMagistr.Name = "toolStripMenuItemMagistr";
-            this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemMagistr.Text = "Магистратура";
             this.toolStripMenuItemMagistr.Click += new System.EventHandler(this.toolStripMenuItemMagistr_Click);
             // 
@@ -156,7 +155,7 @@ namespace ScheduleParse
             // CreatePersonalScheduleToolStripMenuItem
             // 
             this.CreatePersonalScheduleToolStripMenuItem.Name = "CreatePersonalScheduleToolStripMenuItem";
-            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.CreatePersonalScheduleToolStripMenuItem.Text = "Создать";
             this.CreatePersonalScheduleToolStripMenuItem.Click += new System.EventHandler(this.CreatePersonalScheduleToolStripMenuItem_Click);
             // 
@@ -174,7 +173,7 @@ namespace ScheduleParse
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.listViewScheduleTeacher);
-            this.tabPage1.Controls.Add(this.buttonFind);
+            this.tabPage1.Controls.Add(this.buttonFindFullTimeEdu);
             this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Controls.Add(this.dateTimePicker1);
             this.tabPage1.Controls.Add(this.label9);
@@ -189,6 +188,133 @@ namespace ScheduleParse
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Очная форма";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // listViewScheduleTeacher
+            // 
+            this.listViewScheduleTeacher.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.listViewScheduleTeacher.AutoArrange = false;
+            this.listViewScheduleTeacher.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.listViewScheduleTeacher.GridLines = true;
+            this.listViewScheduleTeacher.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewScheduleTeacher.HideSelection = false;
+            this.listViewScheduleTeacher.Location = new System.Drawing.Point(20, 137);
+            this.listViewScheduleTeacher.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.listViewScheduleTeacher.Name = "listViewScheduleTeacher";
+            this.listViewScheduleTeacher.Size = new System.Drawing.Size(543, 242);
+            this.listViewScheduleTeacher.TabIndex = 29;
+            this.listViewScheduleTeacher.UseCompatibleStateImageBehavior = false;
+            this.listViewScheduleTeacher.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "";
+            this.columnHeader1.Width = 90;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Занятия";
+            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader2.Width = 350;
+            // 
+            // buttonFindFullTimeEdu
+            // 
+            this.buttonFindFullTimeEdu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonFindFullTimeEdu.AutoSize = true;
+            this.buttonFindFullTimeEdu.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFindFullTimeEdu.Location = new System.Drawing.Point(438, 88);
+            this.buttonFindFullTimeEdu.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonFindFullTimeEdu.Name = "buttonFindFullTimeEdu";
+            this.buttonFindFullTimeEdu.Size = new System.Drawing.Size(125, 27);
+            this.buttonFindFullTimeEdu.TabIndex = 28;
+            this.buttonFindFullTimeEdu.Text = "Найти";
+            this.buttonFindFullTimeEdu.UseVisualStyleBackColor = true;
+            this.buttonFindFullTimeEdu.Click += new System.EventHandler(this.buttonFindFullTimeEdu_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(205, 48);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(357, 21);
+            this.comboBox1.Sorted = true;
+            this.comboBox1.TabIndex = 27;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.dateTimePicker1.Location = new System.Drawing.Point(206, 91);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(227, 20);
+            this.dateTimePicker1.TabIndex = 26;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(16, 92);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(125, 20);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Выберите дату";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(16, 48);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(155, 20);
+            this.label8.TabIndex = 24;
+            this.label8.Text = "Введите фамилию";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(201, 11);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(174, 24);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "Поиск расписания";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(502, 389);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label2.Size = new System.Drawing.Size(10, 13);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "-";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(203, 389);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label1.Size = new System.Drawing.Size(282, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Дата обновления расписания очной формы обучения:";
             // 
             // tabPage2
             // 
@@ -209,47 +335,114 @@ namespace ScheduleParse
             this.tabPage2.Text = "Заочная форма";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // progressBar1
+            // listView1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(0, 467);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(611, 17);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 15;
-            this.progressBar1.Visible = false;
+            this.listView1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.listView1.AutoArrange = false;
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4});
+            this.listView1.GridLines = true;
+            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(20, 137);
+            this.listView1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(543, 242);
+            this.listView1.TabIndex = 49;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
             // 
-            // label2
+            // columnHeader3
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(502, 380);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(10, 13);
-            this.label2.TabIndex = 18;
-            this.label2.Text = "-";
+            this.columnHeader3.Text = "";
+            this.columnHeader3.Width = 90;
             // 
-            // label1
+            // columnHeader4
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(203, 380);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label1.Size = new System.Drawing.Size(282, 13);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "Дата обновления расписания очной формы обучения:";
+            this.columnHeader4.Text = "Занятия";
+            this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader4.Width = 350;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.button1.AutoSize = true;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(438, 88);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(125, 27);
+            this.button1.TabIndex = 48;
+            this.button1.Text = "Найти";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.comboBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(205, 48);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(357, 21);
+            this.comboBox2.Sorted = true;
+            this.comboBox2.TabIndex = 47;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.dateTimePicker2.Location = new System.Drawing.Point(206, 91);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(227, 20);
+            this.dateTimePicker2.TabIndex = 46;
+            // 
+            // label10
+            // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(16, 92);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(125, 20);
+            this.label10.TabIndex = 45;
+            this.label10.Text = "Выберите дату";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(16, 48);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(155, 20);
+            this.label11.TabIndex = 44;
+            this.label11.Text = "Введите фамилию";
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.Location = new System.Drawing.Point(201, 11);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(174, 24);
+            this.label12.TabIndex = 43;
+            this.label12.Text = "Поиск расписания";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label13
             // 
             this.label13.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(502, 381);
+            this.label13.Location = new System.Drawing.Point(502, 389);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
             this.label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -261,7 +454,7 @@ namespace ScheduleParse
             // 
             this.label15.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(203, 381);
+            this.label15.Location = new System.Drawing.Point(203, 389);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
             this.label15.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -287,211 +480,6 @@ namespace ScheduleParse
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Институт магистратуры";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(201, 3);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(174, 24);
-            this.label7.TabIndex = 23;
-            this.label7.Text = "Поиск расписания";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(16, 40);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(155, 20);
-            this.label8.TabIndex = 24;
-            this.label8.Text = "Введите фамилию";
-            // 
-            // label9
-            // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(16, 84);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(125, 20);
-            this.label9.TabIndex = 25;
-            this.label9.Text = "Выберите дату";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.dateTimePicker1.Location = new System.Drawing.Point(206, 83);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(227, 20);
-            this.dateTimePicker1.TabIndex = 26;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(205, 40);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(357, 21);
-            this.comboBox1.Sorted = true;
-            this.comboBox1.TabIndex = 27;
-            // 
-            // buttonFind
-            // 
-            this.buttonFind.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.buttonFind.AutoSize = true;
-            this.buttonFind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonFind.Location = new System.Drawing.Point(438, 80);
-            this.buttonFind.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonFind.Name = "buttonFind";
-            this.buttonFind.Size = new System.Drawing.Size(125, 27);
-            this.buttonFind.TabIndex = 28;
-            this.buttonFind.Text = "Найти";
-            this.buttonFind.UseVisualStyleBackColor = true;
-            this.buttonFind.Click += new System.EventHandler(this.buttonFind_Click);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "";
-            this.columnHeader1.Width = 90;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Занятия";
-            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader2.Width = 350;
-            // 
-            // listViewScheduleTeacher
-            // 
-            this.listViewScheduleTeacher.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.listViewScheduleTeacher.AutoArrange = false;
-            this.listViewScheduleTeacher.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            this.listViewScheduleTeacher.GridLines = true;
-            this.listViewScheduleTeacher.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listViewScheduleTeacher.HideSelection = false;
-            this.listViewScheduleTeacher.Location = new System.Drawing.Point(20, 129);
-            this.listViewScheduleTeacher.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.listViewScheduleTeacher.Name = "listViewScheduleTeacher";
-            this.listViewScheduleTeacher.Size = new System.Drawing.Size(543, 242);
-            this.listViewScheduleTeacher.TabIndex = 29;
-            this.listViewScheduleTeacher.UseCompatibleStateImageBehavior = false;
-            this.listViewScheduleTeacher.View = System.Windows.Forms.View.Details;
-            // 
-            // listView1
-            // 
-            this.listView1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.listView1.AutoArrange = false;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader3,
-            this.columnHeader4});
-            this.listView1.GridLines = true;
-            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(20, 129);
-            this.listView1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(543, 242);
-            this.listView1.TabIndex = 49;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "";
-            this.columnHeader3.Width = 90;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Занятия";
-            this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader4.Width = 350;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.button1.AutoSize = true;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(438, 80);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 27);
-            this.button1.TabIndex = 48;
-            this.button1.Text = "Найти";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.comboBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBox2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(205, 40);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(357, 21);
-            this.comboBox2.Sorted = true;
-            this.comboBox2.TabIndex = 47;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.dateTimePicker2.Location = new System.Drawing.Point(206, 83);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(227, 20);
-            this.dateTimePicker2.TabIndex = 46;
-            // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(16, 84);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(125, 20);
-            this.label10.TabIndex = 45;
-            this.label10.Text = "Выберите дату";
-            // 
-            // label11
-            // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(16, 40);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(155, 20);
-            this.label11.TabIndex = 44;
-            this.label11.Text = "Введите фамилию";
-            // 
-            // label12
-            // 
-            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(201, 3);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(174, 24);
-            this.label12.TabIndex = 43;
-            this.label12.Text = "Поиск расписания";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // listView2
             // 
@@ -619,6 +607,18 @@ namespace ScheduleParse
             this.label14.TabIndex = 50;
             this.label14.Text = "Дата обновления расписания занятий института магистратуры:";
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(0, 467);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(611, 17);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 15;
+            this.progressBar1.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -657,7 +657,6 @@ namespace ScheduleParse
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExtraStud;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMagistr;
         private System.Windows.Forms.ToolStripMenuItem формированиеРасписанияНаСтендToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
         private System.Windows.Forms.ToolStripMenuItem расписаниеПреподовToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CreatePersonalScheduleToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
@@ -672,9 +671,8 @@ namespace ScheduleParse
         private System.Windows.Forms.ListView listViewScheduleTeacher;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Button buttonFind;
+        private System.Windows.Forms.Button buttonFindFullTimeEdu;
         public System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -698,6 +696,8 @@ namespace ScheduleParse
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label14;
+        public System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
+        public System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }
 

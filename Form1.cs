@@ -16,10 +16,10 @@ namespace ScheduleParse
     public partial class Form1 : Form
     {
 
-        List<Notification> notifications = new List<Notification>();
+        List<NotificationFullTImeEdu> notifications = new List<NotificationFullTImeEdu>();
         List<string> izv = new List<string>();
 
-        List<NotificationFromJson> notificationFromJson = new List<NotificationFromJson>();
+        List<NotificationFullTimeFromJson> notificationFromJson = new List<NotificationFullTimeFromJson>();
 
         Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
 
@@ -60,18 +60,13 @@ namespace ScheduleParse
 
             MethodsClass.GenerateDocApp(izv, notifications);
 
-
-            MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);
-
-            
-            
-            
+            MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);   
         }
 
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
-            label13.Text = DateTime.Now.ToShortDateString();
+            //label13.Text = DateTime.Now.ToShortDateString();
 
             MethodsClass.JsonParse(notifications, jsonExtraStudEdu, this);
         }
@@ -79,7 +74,7 @@ namespace ScheduleParse
         private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
-            label23.Text = DateTime.Now.ToShortDateString();
+            //label23.Text = DateTime.Now.ToShortDateString();
 
             MethodsClass.JsonParse(notifications, jsonMagistrEdu, this);
         }
@@ -90,16 +85,16 @@ namespace ScheduleParse
         { 
             app.Visible = true;
             progressBar1.Visible = true;
-            //MethodsClass.GenerateDocApp(izv, notifications);
+            
             progressBar1.Value = 0;
-
 
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
             var progress = new Progress<int>(x => progressBar1.Value = x);
             await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notificationFromJson, progress));
             progressBar1.Value = 100;
-            
+
+           // progressBar1.Visible = false;
         }
 
         private async void CreatePersonalScheduleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -118,19 +113,20 @@ namespace ScheduleParse
            
         }
 
-        private void toolStripMenuItemUpdate_Click(object sender, EventArgs e)
+        
+
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void label7_Click(object sender, EventArgs e)
+        private void buttonFindFullTimeEdu_Click(object sender, EventArgs e)
         {
+            string result = MethodsClass.WeekDayShort(this);
 
+            MessageBox.Show(comboBox1.SelectedItem.ToString(), /*dateTimePicker1.Value.DayOfWeek.ToString()*/ result);
         }
 
-        private void buttonFind_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

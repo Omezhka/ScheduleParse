@@ -6,9 +6,9 @@ namespace ScheduleParse
     /// <summary>
     /// собственно извещение, у него свойство препод , которое берётся из заголовка
     /// </summary>
-    public class NotificationFromJson
+    public class NotificationFullTimeFromJson
     { 
-        public NotificationFromJson() { }
+        public NotificationFullTimeFromJson() { }
         /// <summary>
         /// препод
         /// </summary>

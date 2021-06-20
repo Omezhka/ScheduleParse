@@ -60,7 +60,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание исходного дока, конвертирование в .txt, создание и заполнение списка notifications, настройка position и форматирование вывода фамилии
         /// </summary>
-        public static void GenerateDocApp(List<string> izv, List<Notification> notifications)
+        public static void GenerateDocApp(List<string> izv, List<NotificationFullTImeEdu> notifications)
         {
             Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
             {
@@ -110,11 +110,10 @@ namespace ScheduleParse
         /// <summary>
         /// Замена сокращенных position на полные и форматирование вывода фио преподавателей
         /// </summary>
-        private static void SettingsFieldNotifications(List<Notification> notifications)
+        private static void SettingsFieldNotifications(List<NotificationFullTImeEdu> notifications)
         {
             foreach (var z in notifications)
             {
-
                 switch (z.teacher.position)
                 {
                     case "доц.":
@@ -147,7 +146,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание и заполнение списка notifications
         /// </summary>
-        private static void CreateNotifications(List<string> izv, Regex regHeader, int i, List<Notification> notifications)
+        private static void CreateNotifications(List<string> izv, Regex regHeader, int i, List<NotificationFullTImeEdu> notifications)
         {
             while (i < izv.Count)
             {
@@ -155,14 +154,14 @@ namespace ScheduleParse
                 {
                     var izvHeaderCathedra = regHeader.Match(izv[i]).Groups["cathedra"].ToString(); // берём название кафедры из заголовка
                     var izvItem = new List<string>();
-                    while (izv[i] != "         Специалист отдела ОУП и ККО Бусова О.В.")
+                    while (!izv[i].Contains("ОУП и ККО"))
                     {
                         izvItem.Add(izv[i]);
                         i++;
                     }
                     if (izvHeaderCathedra == "Информационных технологий и за") // сравниваем название кафедры с нужной, и если совпало - добавляем в список распарщеных извещений
                     {
-                        notifications.Add(new Notification(izvItem));
+                        notifications.Add(new NotificationFullTImeEdu(izvItem));
                     }
                 }
                 i++;
@@ -174,7 +173,7 @@ namespace ScheduleParse
         /// <summary>
         /// Парсинг в json
         /// </summary>
-        public static void JsonParse(List<Notification> notifications, string formEdu, Form1 form)
+        public static void JsonParse(List<NotificationFullTImeEdu> notifications, string formEdu, Form1 form)
         {
             var options = new JsonSerializerOptions
             {
@@ -208,7 +207,7 @@ namespace ScheduleParse
 
         }
 
-        static public void FillingComboBox(List<NotificationFromJson> notificationFromJson, string formEdu, Form1 form)
+        static public void FillingComboBox(List<NotificationFullTimeFromJson> notificationFromJson, string formEdu, Form1 form)
         {
 
             if (notificationFromJson.Count == 0) { notificationFromJson = MethodsClass.JsonParseDes(formEdu); }
@@ -222,31 +221,27 @@ namespace ScheduleParse
             form.label2.Text = DateTime.Now.ToShortDateString();
         }
 
-        public static List<NotificationFromJson> JsonParseDes(string formEdu)
+        public static List<NotificationFullTimeFromJson> JsonParseDes(string formEdu)
         {
-            List<NotificationFromJson> notificationFromJson = new List<NotificationFromJson>();
+            List<NotificationFullTimeFromJson> notificationFromJson = new List<NotificationFullTimeFromJson>();
 
             if (File.Exists(pathSaveJSON + formEdu + ".txt"))
             {
                 var JSONtxt = File.ReadAllText(pathSaveJSON + formEdu + ".txt", Encoding.Default);
 
-                notificationFromJson = JsonSerializer.Deserialize<List<NotificationFromJson>>(JSONtxt);
+                notificationFromJson = JsonSerializer.Deserialize<List<NotificationFullTimeFromJson>>(JSONtxt);
 
             }
-            //foreach (var item in notificationFromJson)
-            //{
-            //    MessageBox.Show(item.teacher.fullname.ToString() + item.teacher.position);
-            //}
-            
-            
+                       
             return notificationFromJson;
         }
 
         /// <summary>
         /// Создание общего расписания для стенда
         /// </summary>
-        public static void CreateGeneralSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFromJson> notificationFromJson, IProgress<int> progress)
+        public static void CreateGeneralSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFullTimeFromJson> notificationFromJson, IProgress<int> progress)
         {
+
             var teacherCount = notificationFromJson.Count();
             //тут создаю новый док, задаю ему альбомную ориентацию
             Document docTable = app.Documents.Add();
@@ -256,7 +251,6 @@ namespace ScheduleParse
             docTable.Paragraphs.Add();
 
             Range rng = docTable.Paragraphs[1].Range;
-
 
             rng.InsertBefore("РАСПИСАНИЕ ЗАНЯТИЙ ПРЕПОДАВАТЕЛЕЙ КАФЕДРЫ " +
                 "ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ И ЗАЩИТЫ ИНФОРМАЦИИ " +
@@ -332,7 +326,7 @@ namespace ScheduleParse
         {
             var week = new List<string>
             {
-                 "пнд",
+                "пнд",
                 "втp",
                 "сpд",
                 "чтв",
@@ -347,7 +341,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание персонального расписания каждого преподавателя
         /// </summary>
-        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<Notification> notifications, IProgress<int> progress)
+        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFullTImeEdu> notifications, IProgress<int> progress)
         {
             //app.Visible = false;
             List<string> classhours = Classhours();
@@ -464,7 +458,7 @@ namespace ScheduleParse
         /// <summary>
         /// Добавление данных в таблицу с индивидуальным расписанием преподавателя
         /// </summary>
-        private static void InsertDataInPersonalTeacherSchedule(List<Notification> notifications,  List<string> classhours, int c, Table tbltst)
+        private static void InsertDataInPersonalTeacherSchedule(List<NotificationFullTImeEdu> notifications,  List<string> classhours, int c, Table tbltst)
         {
             for (var k = 0; k < notifications[c].scheduleList.Count; k++) //столбец
             {
@@ -507,6 +501,42 @@ namespace ScheduleParse
             newFileName = doc.Name.Replace(".doc", ".txt");
             //string newFileNameSave = Path.GetFileName(newFileName);
             doc.SaveAs2(path + newFileName, WdSaveFormat.wdFormatText);
+        }
+        /// <summary>
+        /// Сокращение дней недели для поиска  
+        /// </summary>
+        static public string WeekDayShort(Form1 form)
+        {
+            string result = "";
+
+            switch (form.dateTimePicker1.Value.DayOfWeek.ToString())
+            {
+                case "Monday":
+                    result = MethodsClass.week()[0];
+                    break;
+
+                case "Tuesday":
+                    result = MethodsClass.week()[1];
+                    break;
+
+                case "Wednesday":
+                    result = MethodsClass.week()[2];
+                    break;
+
+                case "Thursday":
+                    result = MethodsClass.week()[3];
+                    break;
+
+                case "Friday":
+                    result = MethodsClass.week()[4];
+                    break;
+
+                case "Saturday":
+                    result = MethodsClass.week()[5];
+                    break;
+            }
+
+            return result;
         }
     }
 }
