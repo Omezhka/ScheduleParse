@@ -31,7 +31,7 @@ namespace ScheduleParse
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItemUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemFullTimeEdu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemExtraStud = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMagistr = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +88,7 @@ namespace ScheduleParse
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemUpdate,
+            this.toolStripMenuUpdate,
             this.формированиеРасписанияНаСтендToolStripMenuItem,
             this.расписаниеПреподовToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -98,34 +98,34 @@ namespace ScheduleParse
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuUpdate";
             // 
-            // toolStripMenuItemUpdate
+            // toolStripMenuUpdate
             // 
-            this.toolStripMenuItemUpdate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuUpdate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemFullTimeEdu,
             this.toolStripMenuItemExtraStud,
             this.toolStripMenuItemMagistr});
-            this.toolStripMenuItemUpdate.Name = "toolStripMenuItemUpdate";
-            this.toolStripMenuItemUpdate.Size = new System.Drawing.Size(156, 20);
-            this.toolStripMenuItemUpdate.Text = "Обновление расписания";
+            this.toolStripMenuUpdate.Name = "toolStripMenuUpdate";
+            this.toolStripMenuUpdate.Size = new System.Drawing.Size(156, 20);
+            this.toolStripMenuUpdate.Text = "Обновление расписания";
             // 
             // toolStripMenuItemFullTimeEdu
             // 
             this.toolStripMenuItemFullTimeEdu.Name = "toolStripMenuItemFullTimeEdu";
-            this.toolStripMenuItemFullTimeEdu.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItemFullTimeEdu.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemFullTimeEdu.Text = "Очная форма";
             this.toolStripMenuItemFullTimeEdu.Click += new System.EventHandler(this.toolStripMenuItemFullTimeEdu_Click);
             // 
             // toolStripMenuItemExtraStud
             // 
             this.toolStripMenuItemExtraStud.Name = "toolStripMenuItemExtraStud";
-            this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemExtraStud.Text = "Заочная форма";
             this.toolStripMenuItemExtraStud.Click += new System.EventHandler(this.toolStripMenuItemExtraStud_Click);
             // 
             // toolStripMenuItemMagistr
             // 
             this.toolStripMenuItemMagistr.Name = "toolStripMenuItemMagistr";
-            this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemMagistr.Text = "Магистратура";
             this.toolStripMenuItemMagistr.Click += new System.EventHandler(this.toolStripMenuItemMagistr_Click);
             // 
@@ -652,7 +652,7 @@ namespace ScheduleParse
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemUpdate;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuUpdate;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFullTimeEdu;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExtraStud;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMagistr;
@@ -668,7 +668,6 @@ namespace ScheduleParse
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage tabPage3;
         public System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListView listViewScheduleTeacher;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button buttonFindFullTimeEdu;
@@ -698,6 +697,7 @@ namespace ScheduleParse
         private System.Windows.Forms.Label label14;
         public System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
         public System.Windows.Forms.DateTimePicker dateTimePicker1;
+        public System.Windows.Forms.ListView listViewScheduleTeacher;
     }
 }
 

@@ -101,10 +101,6 @@ namespace ScheduleParse
             CreateNotifications(izv, regHeader, i, notifications);
 
             SettingsFieldNotifications(notifications);
-
-
-
-            //JsonParse(notifications);
         }
        
         /// <summary>
@@ -403,7 +399,7 @@ namespace ScheduleParse
             app.Quit();
         }
 
-        private static List<string> Classhours()
+        public static List<string> Classhours()
         {
             return new List<string>
             {
@@ -499,7 +495,6 @@ namespace ScheduleParse
         private static void Convert2txt(Document doc)
         {
             newFileName = doc.Name.Replace(".doc", ".txt");
-            //string newFileNameSave = Path.GetFileName(newFileName);
             doc.SaveAs2(path + newFileName, WdSaveFormat.wdFormatText);
         }
         /// <summary>

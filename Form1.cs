@@ -125,6 +125,19 @@ namespace ScheduleParse
             string result = MethodsClass.WeekDayShort(this);
 
             MessageBox.Show(comboBox1.SelectedItem.ToString(), /*dateTimePicker1.Value.DayOfWeek.ToString()*/ result);
+
+            
+           //notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+
+           // foreach (var item in MethodsClass.Classhours())
+           // {
+           //     for (var i = 2; i <= item.Length+1;)
+           //     {
+           //         listViewScheduleTeacher.Columns.Add(MethodsClass.Classhours()[item]);
+           //         i++;
+           //     }
+           // }
+            
         }
 
         
