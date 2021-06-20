@@ -205,6 +205,7 @@ namespace ScheduleParse
                 Console.WriteLine(e.Message);
             }
             FillingComboBox(JsonParseDes(formEdu), formEdu, form);
+
         }
 
         static public void FillingComboBox(List<NotificationFromJson> notificationFromJson, string formEdu, Form1 form)
@@ -218,7 +219,7 @@ namespace ScheduleParse
             }
             form.comboBox1.Enabled = true;
             form.comboBox1.SelectedItem = form.comboBox1.Items[0];
-
+            form.label2.Text = DateTime.Now.ToShortDateString();
         }
 
         public static List<NotificationFromJson> JsonParseDes(string formEdu)

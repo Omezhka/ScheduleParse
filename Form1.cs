@@ -63,7 +63,7 @@ namespace ScheduleParse
 
             MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);
 
-            label2.Text = DateTime.Now.ToShortDateString();
+            
             
             
         }
@@ -71,7 +71,7 @@ namespace ScheduleParse
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
-            label6.Text = DateTime.Now.ToShortDateString();
+            label13.Text = DateTime.Now.ToShortDateString();
 
             MethodsClass.JsonParse(notifications, jsonExtraStudEdu, this);
         }
@@ -79,7 +79,7 @@ namespace ScheduleParse
         private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
-            label5.Text = DateTime.Now.ToShortDateString();
+            label23.Text = DateTime.Now.ToShortDateString();
 
             MethodsClass.JsonParse(notifications, jsonMagistrEdu, this);
         }
@@ -119,6 +119,16 @@ namespace ScheduleParse
         }
 
         private void toolStripMenuItemUpdate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonFind_Click(object sender, EventArgs e)
         {
 
         }
