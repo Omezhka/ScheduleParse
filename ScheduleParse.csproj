@@ -104,6 +104,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="documents\1.doc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
