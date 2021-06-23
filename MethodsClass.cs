@@ -214,7 +214,7 @@ namespace ScheduleParse
             }
             form.comboBox1.Enabled = true;
             form.comboBox1.SelectedItem = form.comboBox1.Items[0];
-            form.label2.Text = DateTime.Now.ToShortDateString();
+            form.label2.Text = DateTime.Today.ToShortDateString();
         }
 
         public static List<NotificationFullTimeFromJson> JsonParseDes(string formEdu)

@@ -36,9 +36,7 @@ namespace ScheduleParse
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-
+        
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
             if (notificationFromJson.Count != 0)
@@ -51,6 +49,19 @@ namespace ScheduleParse
                 comboBox1.Enabled = false;
             }
 
+            listViewScheduleTeacher.Columns.Add("Item Column" );
+            listViewScheduleTeacher.Columns.Add("Item Column");
+
+            ListViewItem classhours = new ListViewItem("classhours", 0);
+            // Place a check mark next to the item.
+
+            classhours.SubItems.Add("1");
+            classhours.SubItems.Add("2");
+            classhours.SubItems.Add("3");
+
+            listViewScheduleTeacher.Items.AddRange(new ListViewItem[] { classhours});
+
+            listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         
@@ -117,6 +128,7 @@ namespace ScheduleParse
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
 
         }
 

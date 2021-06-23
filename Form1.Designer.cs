@@ -42,8 +42,6 @@ namespace ScheduleParse
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listViewScheduleTeacher = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonFindFullTimeEdu = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -111,21 +109,21 @@ namespace ScheduleParse
             // toolStripMenuItemFullTimeEdu
             // 
             this.toolStripMenuItemFullTimeEdu.Name = "toolStripMenuItemFullTimeEdu";
-            this.toolStripMenuItemFullTimeEdu.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemFullTimeEdu.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemFullTimeEdu.Text = "Очная форма";
             this.toolStripMenuItemFullTimeEdu.Click += new System.EventHandler(this.toolStripMenuItemFullTimeEdu_Click);
             // 
             // toolStripMenuItemExtraStud
             // 
             this.toolStripMenuItemExtraStud.Name = "toolStripMenuItemExtraStud";
-            this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemExtraStud.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemExtraStud.Text = "Заочная форма";
             this.toolStripMenuItemExtraStud.Click += new System.EventHandler(this.toolStripMenuItemExtraStud_Click);
             // 
             // toolStripMenuItemMagistr
             // 
             this.toolStripMenuItemMagistr.Name = "toolStripMenuItemMagistr";
-            this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemMagistr.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemMagistr.Text = "Магистратура";
             this.toolStripMenuItemMagistr.Click += new System.EventHandler(this.toolStripMenuItemMagistr_Click);
             // 
@@ -193,9 +191,6 @@ namespace ScheduleParse
             // 
             this.listViewScheduleTeacher.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.listViewScheduleTeacher.AutoArrange = false;
-            this.listViewScheduleTeacher.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
             this.listViewScheduleTeacher.GridLines = true;
             this.listViewScheduleTeacher.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listViewScheduleTeacher.HideSelection = false;
@@ -206,17 +201,6 @@ namespace ScheduleParse
             this.listViewScheduleTeacher.TabIndex = 29;
             this.listViewScheduleTeacher.UseCompatibleStateImageBehavior = false;
             this.listViewScheduleTeacher.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "";
-            this.columnHeader1.Width = 90;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Занятия";
-            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader2.Width = 350;
             // 
             // buttonFindFullTimeEdu
             // 
@@ -668,8 +652,6 @@ namespace ScheduleParse
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage tabPage3;
         public System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button buttonFindFullTimeEdu;
         public System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label9;
