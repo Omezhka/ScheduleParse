@@ -29,7 +29,6 @@ namespace ScheduleParse
         static string writePathJSON;
         static string json;
 
-
         /// <summary>
         /// Открытие проводника и загрузка документов
         /// </summary>
@@ -86,7 +85,15 @@ namespace ScheduleParse
 
                 }
             }
-            
+
+
+            var headerDoc = (izv[2].Trim() + " " + izv[3].Trim()).ToUpper();
+
+            var headerDocForGeneralSchedule = (izv[2].Trim() + " " + izv[3].Trim()).Replace("расписания Ваших занятий", String.Empty).ToUpper();
+
+            File.WriteAllText(path +"saveHeaderDoc.txt", headerDoc);
+            File.WriteAllText(path + "saveheaderDocForGeneralSchedule.txt", headerDocForGeneralSchedule);
+
             CreateNotifications(izv, notifications);
 
             SettingsFieldNotifications(notifications);
@@ -198,7 +205,13 @@ namespace ScheduleParse
             }
             form.comboBox1.Enabled = true;
             form.comboBox1.SelectedItem = form.comboBox1.Items[0];
-            form.label2.Text = DateTime.Today.ToShortDateString();
+
+
+            DateTime fileCreatedDate = File.GetLastWriteTime(pathSaveJSON + formEdu+ ".txt");
+            if (fileCreatedDate.Date.ToShortDateString() != "01.01.1601")
+                form.label2.Text = fileCreatedDate.Date.ToShortDateString(); 
+            else form.label2.Text = "-";
+           
         }
 
         public static List<NotificationFullTimeFromJson> JsonParseDes(string formEdu)
@@ -231,10 +244,11 @@ namespace ScheduleParse
             docTable.Paragraphs.Add();
 
             Range rng = docTable.Paragraphs[1].Range;
+            var headerDocForGeneralSchedule = File.ReadAllText(path + "saveheaderDocForGeneralSchedule.txt", Encoding.UTF8);
 
             rng.InsertBefore("РАСПИСАНИЕ ЗАНЯТИЙ ПРЕПОДАВАТЕЛЕЙ КАФЕДРЫ " +
                 "ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ И ЗАЩИТЫ ИНФОРМАЦИИ " +
-                "НА 1 - е ПОЛУГОДИЕ 2020 / 2021 УЧЕБНОГО ГОДА");
+                headerDocForGeneralSchedule);
             rng.InsertParagraphAfter();
             //собсна, стили текста выше
             SettingsTitle(rng);
@@ -321,16 +335,16 @@ namespace ScheduleParse
         /// <summary>
         /// Создание персонального расписания каждого преподавателя
         /// </summary>
-        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFullTImeEdu> notifications, IProgress<int> progress)
+        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFullTimeFromJson> notificationFromJson, IProgress<int> progress)
         {
             //app.Visible = false;
             List<string> classhours = Classhours();
 
             int c = 0;
 
-            if (c <= notifications.Count)
+            if (c <= notificationFromJson.Count)
             {
-                foreach (var variable in notifications)
+                foreach (var variable in notificationFromJson)
                 {
                     Document teacherScheduleTable = app.Documents.Add();
 
@@ -340,7 +354,9 @@ namespace ScheduleParse
 
                     Range rngtst = teacherScheduleTable.Paragraphs[1].Range;
 
-                    rngtst.InsertBefore("РАСПИСАНИЕ ВАШИХ ЗАНЯТИЙ НА 1 - е ПОЛУГОДИЕ 2020 / 2021 УЧЕБНОГО ГОДА");
+                    var headerDoc = File.ReadAllText(path + "saveheaderDoc.txt", Encoding.UTF8);
+
+                    rngtst.InsertBefore(headerDoc);
                     rngtst.InsertParagraphAfter();
 
                     SettingsTitle(rngtst);
@@ -365,14 +381,14 @@ namespace ScheduleParse
 
                     InsertFirstColumnInTable(classhours, tbltst);
 
-                    InsertDataInPersonalTeacherSchedule(notifications, classhours, c, tbltst);
+                    InsertDataInPersonalTeacherSchedule(notificationFromJson, classhours, c, tbltst);
                     DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepods);
                     if (!dirInfo.Exists)
                     {
                         dirInfo.Create();
                     }
 
-                    teacherScheduleTable.SaveAs2(pathSavePrepods + notifications[c].teacher.fullname + ".docx");
+                    teacherScheduleTable.SaveAs2(pathSavePrepods + notificationFromJson[c].teacher.fullname + ".docx");
                     progress.Report(c * 4);
                     app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
                     c++;
@@ -438,26 +454,26 @@ namespace ScheduleParse
         /// <summary>
         /// Добавление данных в таблицу с индивидуальным расписанием преподавателя
         /// </summary>
-        private static void InsertDataInPersonalTeacherSchedule(List<NotificationFullTImeEdu> notifications,  List<string> classhours, int c, Table tbltst)
+        private static void InsertDataInPersonalTeacherSchedule(List<NotificationFullTimeFromJson> notificationFromJson,  List<string> classhours, int c, Table tbltst)
         {
-            for (var k = 0; k < notifications[c].scheduleList.Count; k++) //столбец
+            for (var k = 0; k < notificationFromJson[c].scheduleList.Count; k++) //столбец
             {
-                int indexDayPosition = week().IndexOf(notifications[c].scheduleList[k].days);
-                int indexClasshoursPosition = classhours.IndexOf(notifications[c].scheduleList[k].classhours);
+                int indexDayPosition = week().IndexOf(notificationFromJson[c].scheduleList[k].days);
+                int indexClasshoursPosition = classhours.IndexOf(notificationFromJson[c].scheduleList[k].classhours);
 
                 tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
 
-                if (notifications[c].scheduleList[k].Week)
+                if (notificationFromJson[c].scheduleList[k].Week)
                 {
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"чет:"} {notifications[c].teacher.fullname } " +
-                                                                                                     $"{notifications[c].scheduleList[k].group } " +
-                                                                                                     $"{"a." + notifications[c].scheduleList[k].audience }\r\n");
+                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"чет:"} {notificationFromJson[c].teacher.fullname } " +
+                                                                                                     $"{notificationFromJson[c].scheduleList[k].group } " +
+                                                                                                     $"{"a." + notificationFromJson[c].scheduleList[k].audience }\r\n");
                 }
                 else
                 {
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"нечет:"} {notifications[c].teacher.fullname } " +
-                                                                                                     $"{notifications[c].scheduleList[k].group } " +
-                                                                                                     $"{"a." + notifications[c].scheduleList[k].audience }\r\n");
+                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"нечет:"} {notificationFromJson[c].teacher.fullname } " +
+                                                                                                     $"{notificationFromJson[c].scheduleList[k].group } " +
+                                                                                                     $"{"a." + notificationFromJson[c].scheduleList[k].audience }\r\n");
                 }
             }
         }
@@ -532,5 +548,6 @@ namespace ScheduleParse
 
             return parityOfWeek;
         }
+
     }
 }

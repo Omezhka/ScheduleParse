@@ -50,7 +50,6 @@ namespace ScheduleParse
                 comboBox1.Enabled = false;
             }
 
-
         }
 
 
@@ -94,7 +93,6 @@ namespace ScheduleParse
             await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notificationFromJson, progress));
             progressBar1.Value = 100;
 
-            // progressBar1.Visible = false;
         }
 
         private async void CreatePersonalScheduleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -103,11 +101,14 @@ namespace ScheduleParse
             app.Visible = false;
 
             progressBar1.Visible = true;
+
             MethodsClass.GenerateDocApp(izv, notifications);
             progressBar1.Value = 0;
 
+            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+
             var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notifications, progress));
+            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notificationFromJson, progress));
             progressBar1.Value = 100;
 
 
