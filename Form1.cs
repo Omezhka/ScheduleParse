@@ -32,12 +32,10 @@ namespace ScheduleParse
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
             if (notificationFromJson.Count != 0)
@@ -49,17 +47,24 @@ namespace ScheduleParse
                 comboBox1.Text = "Не загружено расписание";
                 comboBox1.Enabled = false;
             }
-
         }
 
 
-        private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
+        private async void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
+           
+            progressBar1.Visible = true;
+            var rrogress1 = new Progress<int>();
+            
+            progressBar1.Value = 0;
 
-            MethodsClass.GenerateDocApp(izv, notifications);
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClass.GenerateDocApp(izv, notifications, progress));
+            progressBar1.Value = 100;
 
             MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);
+
         }
 
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
@@ -101,8 +106,8 @@ namespace ScheduleParse
             app.Visible = false;
 
             progressBar1.Visible = true;
-
-            MethodsClass.GenerateDocApp(izv, notifications);
+            var rrogress1 = new Progress<int>();
+            MethodsClass.GenerateDocApp(izv, notifications, rrogress1);
             progressBar1.Value = 0;
 
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
