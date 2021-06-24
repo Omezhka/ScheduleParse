@@ -29,10 +29,6 @@ namespace ScheduleParse
         static string writePathJSON;
         static string json;
 
-        // public static string filePath { get; set; }
-
-        
-
 
         /// <summary>
         /// Открытие проводника и загрузка документов
@@ -90,15 +86,8 @@ namespace ScheduleParse
 
                 }
             }
-
-            int i = 0;
-
-            var regHeader = new Regex(Pattern.header);
-            var groupHeaderNames = regHeader.GetGroupNames();
-            var regScheduleItem = new Regex(Pattern.scheduleItem);
-            var groupScheduleItemNames = regScheduleItem.GetGroupNames();
-
-            CreateNotifications(izv, regHeader, i, notifications);
+            
+            CreateNotifications(izv, notifications);
 
             SettingsFieldNotifications(notifications);
         }
@@ -130,20 +119,17 @@ namespace ScheduleParse
 
                 TextInfo myTI = new CultureInfo("ru-RU", false).TextInfo;
                 z.teacher.fullname = myTI.ToTitleCase(teacherfullnameLower);
-
-                //Console.WriteLine($"{z.teacher.position} {z.teacher.fullname} {z.teacher.cathedra}");
-                //foreach (var y in z.scheduleList)
-                //{
-                //    Console.WriteLine($"{y.group} {y.Week}");
-                //}
             }
         }
 
         /// <summary>
         /// Создание и заполнение списка notifications
         /// </summary>
-        private static void CreateNotifications(List<string> izv, Regex regHeader, int i, List<NotificationFullTImeEdu> notifications)
+        private static void CreateNotifications(List<string> izv, List<NotificationFullTImeEdu> notifications)
         {
+            var regHeader = new Regex(Pattern.header);
+            int i = 0;
+
             while (i < izv.Count)
             {
                 if (regHeader.IsMatch(izv[i]))
@@ -161,9 +147,7 @@ namespace ScheduleParse
                     }
                 }
                 i++;
-            }
-
-            
+            }            
         }
 
         /// <summary>
@@ -318,7 +302,7 @@ namespace ScheduleParse
         /// <summary>
         /// Список с сокращенными днями недели для заполнения расписания
         /// </summary>
-        private static List<string> week()
+        public static List<string> week()
         {
             var week = new List<string>
             {
@@ -458,11 +442,8 @@ namespace ScheduleParse
         {
             for (var k = 0; k < notifications[c].scheduleList.Count; k++) //столбец
             {
-                var indexDayPosition = 0;
-                var indexClasshoursPosition = 0;
-
-                indexDayPosition = week().IndexOf(notifications[c].scheduleList[k].days);
-                indexClasshoursPosition = classhours.IndexOf(notifications[c].scheduleList[k].classhours);
+                int indexDayPosition = week().IndexOf(notifications[c].scheduleList[k].days);
+                int indexClasshoursPosition = classhours.IndexOf(notifications[c].scheduleList[k].classhours);
 
                 tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
 
@@ -532,6 +513,24 @@ namespace ScheduleParse
             }
 
             return result;
+        }
+        static public bool ParityOfWeek(Form1 form)
+        {
+            DateTimeFormatInfo dateTimeFormatInfo = DateTimeFormatInfo.CurrentInfo;
+            Calendar cal = dateTimeFormatInfo.Calendar;
+            bool parityOfWeek;
+            var date = cal.GetWeekOfYear(DateTime.Parse(form.dateTimePicker1.Value.ToString()), CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
+
+            if (date % 2 == 0)
+            {
+                parityOfWeek = true;
+            }
+            else
+            {
+                parityOfWeek = false;
+            }
+
+            return parityOfWeek;
         }
     }
 }

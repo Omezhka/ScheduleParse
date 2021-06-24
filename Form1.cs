@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -36,7 +37,7 @@ namespace ScheduleParse
 
         private void Form1_Load(object sender, EventArgs e)
         {
-        
+
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
             if (notificationFromJson.Count != 0)
@@ -49,29 +50,17 @@ namespace ScheduleParse
                 comboBox1.Enabled = false;
             }
 
-            listViewScheduleTeacher.Columns.Add("Item Column" );
-            listViewScheduleTeacher.Columns.Add("Item Column");
 
-            ListViewItem classhours = new ListViewItem("classhours", 0);
-            // Place a check mark next to the item.
-
-            classhours.SubItems.Add("1");
-            classhours.SubItems.Add("2");
-            classhours.SubItems.Add("3");
-
-            listViewScheduleTeacher.Items.AddRange(new ListViewItem[] { classhours});
-
-            listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        
+
         private void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
             MethodsClass.LoadFiles();
 
             MethodsClass.GenerateDocApp(izv, notifications);
 
-            MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);   
+            MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);
         }
 
         private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
@@ -89,14 +78,14 @@ namespace ScheduleParse
 
             MethodsClass.JsonParse(notifications, jsonMagistrEdu, this);
         }
-        
-        
+
+
 
         private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
-        { 
+        {
             app.Visible = true;
             progressBar1.Visible = true;
-            
+
             progressBar1.Value = 0;
 
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
@@ -105,7 +94,7 @@ namespace ScheduleParse
             await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notificationFromJson, progress));
             progressBar1.Value = 100;
 
-           // progressBar1.Visible = false;
+            // progressBar1.Visible = false;
         }
 
         private async void CreatePersonalScheduleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -120,38 +109,64 @@ namespace ScheduleParse
             var progress = new Progress<int>(x => progressBar1.Value = x);
             await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notifications, progress));
             progressBar1.Value = 100;
-           
-           
+
+
         }
 
-        
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
 
         }
 
         private void buttonFindFullTimeEdu_Click(object sender, EventArgs e)
         {
+            listViewScheduleTeacher.Clear();
             string result = MethodsClass.WeekDayShort(this);
+            var res = new List<NotificationFullTimeFromJson>();
+            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
-            MessageBox.Show(comboBox1.SelectedItem.ToString(), /*dateTimePicker1.Value.DayOfWeek.ToString()*/ result);
+            bool parityOfWeek = MethodsClass.ParityOfWeek(this);
 
-            
-           //notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+            res = notificationFromJson.Where(s => s.teacher.fullname == comboBox1.SelectedItem.ToString()).ToList();
 
-           // foreach (var item in MethodsClass.Classhours())
-           // {
-           //     for (var i = 2; i <= item.Length+1;)
-           //     {
-           //         listViewScheduleTeacher.Columns.Add(MethodsClass.Classhours()[item]);
-           //         i++;
-           //     }
-           // }
-            
+            listViewScheduleTeacher.Columns.Add("Время");
+            listViewScheduleTeacher.Columns.Add("Группа");
+            listViewScheduleTeacher.Columns.Add("Аудитория");
+            listViewScheduleTeacher.Columns.Add("Предмет");
+
+
+            foreach (var r in res)
+            {
+                for (var i = 0; i < r.scheduleList.Count; i++)
+                {
+                    if (r.scheduleList[i].days == result)
+                    {
+                        if (parityOfWeek == r.scheduleList[i].Week)
+                        {
+                            //MessageBox.Show(rd.days);
+                            //MessageBox.Show(item1.classhours); 
+                            ListViewItem classhoursListViewItem = new ListViewItem(r.scheduleList[i].classhours);
+                            ListViewItem groupListViewItem = new ListViewItem(r.scheduleList[i].group);
+                            ListViewItem audienceListViewItem = new ListViewItem(r.scheduleList[i].audience);
+                            ListViewItem subjectListViewItem = new ListViewItem(r.scheduleList[i].subject);
+                            //MessageBox.Show(/*comboBox1.SelectedItem.ToString()*/ r.ToString(), result);
+                            classhoursListViewItem.SubItems.Add(r.scheduleList[i].group);
+                            classhoursListViewItem.SubItems.Add(r.scheduleList[i].audience);
+                            classhoursListViewItem.SubItems.Add(r.scheduleList[i].subject);
+
+                            listViewScheduleTeacher.Items.AddRange(new ListViewItem[] { classhoursListViewItem });
+                        }
+                    }
+                }
+                listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            }
         }
 
         
-    }
+    }        
+    
 }
