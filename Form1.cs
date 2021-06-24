@@ -124,13 +124,14 @@ namespace ScheduleParse
         private void buttonFindFullTimeEdu_Click(object sender, EventArgs e)
         {
             listViewScheduleTeacher.Clear();
+
             string result = MethodsClass.WeekDayShort(this);
-            var res = new List<NotificationFullTimeFromJson>();
+
             notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
 
             bool parityOfWeek = MethodsClass.ParityOfWeek(this);
 
-            res = notificationFromJson.Where(s => s.teacher.fullname == comboBox1.SelectedItem.ToString()).ToList();
+            var res = notificationFromJson.Where(s => s.teacher.fullname == comboBox1.SelectedItem.ToString()).ToList();
 
             listViewScheduleTeacher.Columns.Add("Время");
             listViewScheduleTeacher.Columns.Add("Группа");
@@ -142,31 +143,22 @@ namespace ScheduleParse
             {
                 for (var i = 0; i < r.scheduleList.Count; i++)
                 {
-                    if (r.scheduleList[i].days == result)
-                    {
-                        if (parityOfWeek == r.scheduleList[i].Week)
-                        {
-                            //MessageBox.Show(rd.days);
-                            //MessageBox.Show(item1.classhours); 
+                    if (r.scheduleList[i].days == result && parityOfWeek == r.scheduleList[i].Week)
+                    {                 
                             ListViewItem classhoursListViewItem = new ListViewItem(r.scheduleList[i].classhours);
                             ListViewItem groupListViewItem = new ListViewItem(r.scheduleList[i].group);
                             ListViewItem audienceListViewItem = new ListViewItem(r.scheduleList[i].audience);
                             ListViewItem subjectListViewItem = new ListViewItem(r.scheduleList[i].subject);
-                            //MessageBox.Show(/*comboBox1.SelectedItem.ToString()*/ r.ToString(), result);
+
                             classhoursListViewItem.SubItems.Add(r.scheduleList[i].group);
                             classhoursListViewItem.SubItems.Add(r.scheduleList[i].audience);
                             classhoursListViewItem.SubItems.Add(r.scheduleList[i].subject);
 
-                            listViewScheduleTeacher.Items.AddRange(new ListViewItem[] { classhoursListViewItem });
-                        }
+                            listViewScheduleTeacher.Items.AddRange(new ListViewItem[] { classhoursListViewItem }); 
                     }
                 }
                 listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
             }
-        }
-
-        
-    }        
-    
+        }     
+    }         
 }
