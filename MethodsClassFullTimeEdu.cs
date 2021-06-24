@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace ScheduleParse
 {
-    public static class MethodsClass
+    public static class MethodsClassFullTimeEdu
    {
         static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
         static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
@@ -26,87 +26,70 @@ namespace ScheduleParse
 
         static string pathSaveJSON = path + @"json\";
 
-        static string filePath;
+        static string newFileName = String.Empty;
 
-        static string newFileName;
-
-        static string writePathJSON;
-       // static string json;
-
-        /// <summary>
-        /// Открытие проводника и загрузка документов
-        /// </summary>
-        public static void LoadFiles()
-        {
-            //filePath = string.Empty;
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "doc files (*.doc)|*.doc";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    //Get the path of specified file
-                    filePath = openFileDialog.FileName; 
-                }
-            }
-
-            MessageBox.Show("filePath: "+ filePath, "File Content at path: " + filePath, MessageBoxButtons.OK);
-        }
+       static string headerDoc = String.Empty;
+        static string headerDocForGeneralSchedule = String.Empty;
 
         /// <summary>
         /// Создание исходного дока, конвертирование в .txt, создание и заполнение списка notifications, настройка position и форматирование вывода фамилии
         /// </summary>
-        public static void GenerateDocApp(List<string> izv, List<NotificationFullTImeEdu> notifications, IProgress<int> progress)
+        public static void GenerateDocAppFullTimeEdu(List<string> izv, List<NotificationFullTimeEdu> notifications, IProgress<int> progress, string filePath)
         {
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
-            {
-                Visible = false
-            };
 
-            Document doc = app.Documents.OpenNoRepairDialog(filePath);
-            try
+            if (filePath == String.Empty)
             {
-               Convert2txt(doc);
+                MessageBox.Show("oops");
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e.Message);
-            }
-
-            app.ActiveDocument.Close();
-            
-            string filenametxt = path + newFileName;
-            
-            using (StreamReader sr = new StreamReader(filenametxt, System.Text.Encoding.Default))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
                 {
-                    izv.Add(line);
+                    Visible = false
+                };
 
+                Document doc = app.Documents.OpenNoRepairDialog(filePath);
+                try
+                {
+                   newFileName = MethodsGeneralClass.Convert2txt(doc,path);
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                app.ActiveDocument.Close();
+
+                string filenametxt = path + newFileName;
+
+                using (StreamReader sr = new StreamReader(filenametxt, System.Text.Encoding.Default))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        izv.Add(line);
+
+                    }
+                }
+
+
+                headerDoc = (izv[2].Trim() + " " + izv[3].Trim()).ToUpper();
+
+                headerDocForGeneralSchedule = (izv[2].Trim() + " " + izv[3].Trim()).Replace("расписания Ваших занятий", String.Empty).ToUpper();
+
+                File.WriteAllText(path + "saveHeaderDoc.txt", headerDoc);
+                File.WriteAllText(path + "saveheaderDocForGeneralSchedule.txt", headerDocForGeneralSchedule);
+
+                CreateNotificationsFullTimeEdu(izv, notifications, progress);
+
+                SettingsFieldNotificationsFullTimeEdu(notifications);
             }
-
-
-            var headerDoc = (izv[2].Trim() + " " + izv[3].Trim()).ToUpper();
-
-            var headerDocForGeneralSchedule = (izv[2].Trim() + " " + izv[3].Trim()).Replace("расписания Ваших занятий", String.Empty).ToUpper();
-
-            File.WriteAllText(path +"saveHeaderDoc.txt", headerDoc);
-            File.WriteAllText(path + "saveheaderDocForGeneralSchedule.txt", headerDocForGeneralSchedule);
-
-            CreateNotifications(izv, notifications, progress);
-
-            SettingsFieldNotifications(notifications);
         }
-       
+
         /// <summary>
         /// Замена сокращенных position на полные и форматирование вывода фио преподавателей
         /// </summary>
-        private static void SettingsFieldNotifications(List<NotificationFullTImeEdu> notifications)
+        private static void SettingsFieldNotificationsFullTimeEdu(List<NotificationFullTimeEdu> notifications)
         {
             foreach (var z in notifications)
             {
@@ -133,10 +116,11 @@ namespace ScheduleParse
             }
         }
 
+
         /// <summary>
         /// Создание и заполнение списка notifications
         /// </summary>
-        private static void CreateNotifications(List<string> izv, List<NotificationFullTImeEdu> notifications, IProgress<int> progress)
+        private static void CreateNotificationsFullTimeEdu(List<string> izv, List<NotificationFullTimeEdu> notifications, IProgress<int> progress)
         {
             var regHeader = new Regex(Pattern.header);
             int i = 0;
@@ -154,7 +138,7 @@ namespace ScheduleParse
                     }
                     if (izvHeaderCathedra == "Информационных технологий и за") // сравниваем название кафедры с нужной, и если совпало - добавляем в список распарщеных извещений
                     {
-                        notifications.Add(new NotificationFullTImeEdu(izvItem));
+                        notifications.Add(new NotificationFullTimeEdu(izvItem));
                     }
                 }
                 i++;
@@ -165,7 +149,7 @@ namespace ScheduleParse
         /// <summary>
         /// Парсинг в json
         /// </summary>
-        public static void JsonParse(List<NotificationFullTImeEdu> notifications, string formEdu, Form1 form)
+        public static void JsonParseFullTimeEdu(List<NotificationFullTimeEdu> notifications, string formEdu, Form1 form)
         {
             var options = new JsonSerializerOptions
             {
@@ -181,7 +165,7 @@ namespace ScheduleParse
                 dirInfo.Create();
             }
 
-            writePathJSON = pathSaveJSON + formEdu + ".txt";
+            var writePathJSON = pathSaveJSON + formEdu + ".txt";
 
             try
             {
@@ -195,14 +179,14 @@ namespace ScheduleParse
             {
                 Console.WriteLine(e.Message);
             }
-            FillingComboBox(JsonParseDes(formEdu), formEdu, form);
+            FillingComboBoxFullTimeEdu(JsonParseDesFullTimeEdu(formEdu), formEdu, form);
 
         }
 
-        static public void FillingComboBox(List<NotificationFullTimeFromJson> notificationFullTimeFromJson, string formEdu, Form1 form)
+        static public void FillingComboBoxFullTimeEdu(List<NotificationFullTimeFromJson> notificationFullTimeFromJson, string formEdu, Form1 form)
         {
 
-            if (notificationFullTimeFromJson.Count == 0) { notificationFullTimeFromJson = MethodsClass.JsonParseDes(formEdu); }
+            if (notificationFullTimeFromJson.Count == 0) { notificationFullTimeFromJson = JsonParseDesFullTimeEdu(formEdu); }
 
             foreach (var item in notificationFullTimeFromJson)
             {
@@ -219,7 +203,7 @@ namespace ScheduleParse
            
         }
 
-        public static List<NotificationFullTimeFromJson> JsonParseDes(string formEdu)
+        public static List<NotificationFullTimeFromJson> JsonParseDesFullTimeEdu(string formEdu)
         {
             List<NotificationFullTimeFromJson> notificationFullTimeFromJson = new List<NotificationFullTimeFromJson>();
 
@@ -340,7 +324,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание персонального расписания каждого преподавателя
         /// </summary>
-        public static void CreatePersonalSchedule(Microsoft.Office.Interop.Word.Application app, List<NotificationFullTimeFromJson> notificationFullTimeFromJson, IProgress<int> progress)
+        public static void CreatePersonalScheduleFullTimeEdu(Microsoft.Office.Interop.Word.Application app, List<NotificationFullTimeFromJson> notificationFullTimeFromJson, IProgress<int> progress)
         {
             //app.Visible = false;
             List<string> classhours = Classhours();
@@ -401,10 +385,10 @@ namespace ScheduleParse
 
             }
 
-            app.Quit();
+            //app.Quit();
         }
 
-        public static List<string> Classhours()
+        private static List<string> Classhours()
         {
             return new List<string>
             {
@@ -491,68 +475,9 @@ namespace ScheduleParse
             teacherScheduleTable.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
         }
 
-        /// <summary>
-        /// Конвертация документа из .doc в .txt
-        /// </summary>
-        private static void Convert2txt(Document doc)
-        {
-            newFileName = doc.Name.Replace(".doc", ".txt");
-            doc.SaveAs2(path + newFileName, WdSaveFormat.wdFormatText);
-        }
-        /// <summary>
-        /// Сокращение дней недели для поиска  
-        /// </summary>
-        static public string WeekDayShort(Form1 form)
-        {
-            string result = "";
+        
+     
 
-            switch (form.dateTimePicker1.Value.DayOfWeek.ToString())
-            {
-                case "Monday":
-                    result = MethodsClass.week()[0];
-                    break;
-
-                case "Tuesday":
-                    result = MethodsClass.week()[1];
-                    break;
-
-                case "Wednesday":
-                    result = MethodsClass.week()[2];
-                    break;
-
-                case "Thursday":
-                    result = MethodsClass.week()[3];
-                    break;
-
-                case "Friday":
-                    result = MethodsClass.week()[4];
-                    break;
-
-                case "Saturday":
-                    result = MethodsClass.week()[5];
-                    break;
-            }
-
-            return result;
-        }
-        static public bool ParityOfWeek(Form1 form)
-        {
-            DateTimeFormatInfo dateTimeFormatInfo = DateTimeFormatInfo.CurrentInfo;
-            Calendar cal = dateTimeFormatInfo.Calendar;
-            bool parityOfWeek;
-            var date = cal.GetWeekOfYear(DateTime.Parse(form.dateTimePicker1.Value.ToString()), CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
-
-            if (date % 2 == 0)
-            {
-                parityOfWeek = true;
-            }
-            else
-            {
-                parityOfWeek = false;
-            }
-
-            return parityOfWeek;
-        }
 
     }
 }

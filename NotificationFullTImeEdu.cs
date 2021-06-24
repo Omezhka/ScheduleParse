@@ -6,7 +6,7 @@ namespace ScheduleParse
     /// <summary>
     /// собственно извещение, у него свойство препод , которое берётся из заголовка
     /// </summary>
-    public class NotificationFullTImeEdu
+    public class NotificationFullTimeEdu
     {
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace ScheduleParse
         /// </summary>
         public List<Schedule> scheduleList { get; set; }
 
-        public NotificationFullTImeEdu(List<string> izvItem)
+        public NotificationFullTimeEdu(List<string> izvItem)
         {
             int i = 0;
 

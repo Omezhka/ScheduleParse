@@ -17,10 +17,12 @@ namespace ScheduleParse
     public partial class Form1 : Form
     {
 
-        List<NotificationFullTImeEdu> notifications = new List<NotificationFullTImeEdu>();
+ 
+       
         List<string> izv = new List<string>();
 
-        List<NotificationFullTimeFromJson> notificationFromJson = new List<NotificationFullTimeFromJson>();
+        List<NotificationFullTimeFromJson> notificationFullTimeFromJson = new List<NotificationFullTimeFromJson>();
+        List<NotificationMagisterFromJson> notificationExtraAndMagFromJson = new List<NotificationMagisterFromJson>();
 
         Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
 
@@ -36,51 +38,74 @@ namespace ScheduleParse
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+            notificationFullTimeFromJson = MethodsClassFullTimeEdu.JsonParseDesFullTimeEdu(jsonFullTimeEdu);
 
-            if (notificationFromJson.Count != 0)
+            if (notificationFullTimeFromJson.Count != 0)
             {
-                MethodsClass.FillingComboBox(notificationFromJson, jsonFullTimeEdu, this);
+                MethodsClassFullTimeEdu.FillingComboBoxFullTimeEdu(notificationFullTimeFromJson, jsonFullTimeEdu, this);
             }
             else
             {
                 comboBox1.Text = "Не загружено расписание";
                 comboBox1.Enabled = false;
             }
+
+            notificationExtraAndMagFromJson = MethodsClassExtraAndMag.JsonParseDesExtraAndMag(jsonExtraStudEdu);
+
+            if (notificationExtraAndMagFromJson.Count != 0)
+            {
+                MethodsClassExtraAndMag.FillingComboBoxExtraAndMag(notificationExtraAndMagFromJson, jsonFullTimeEdu, this);
+            }
+            else
+            {
+                comboBoxExtraEdu.Text = "Не загружено расписание";
+                comboBoxExtraEdu.Enabled = false;
+            }
+
         }
 
 
         private async void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
-            MethodsClass.LoadFiles();
-           
+            var filePath = MethodsGeneralClass.LoadFiles();
+            List<NotificationFullTimeEdu> notifications = new List<NotificationFullTimeEdu>();
+
             progressBar1.Visible = true;
             var rrogress1 = new Progress<int>();
             
             progressBar1.Value = 0;
 
             var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClass.GenerateDocApp(izv, notifications, progress));
+            await System.Threading.Tasks.Task.Run(() => MethodsClassFullTimeEdu.GenerateDocAppFullTimeEdu(izv, notifications, progress, filePath));
             progressBar1.Value = 100;
 
-            MethodsClass.JsonParse(notifications, jsonFullTimeEdu, this);
+            MethodsClassFullTimeEdu.JsonParseFullTimeEdu(notifications, jsonFullTimeEdu, this);
 
         }
 
-        private void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
+        private async void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
         {
-            MethodsClass.LoadFiles();
-            //label13.Text = DateTime.Now.ToShortDateString();
+            var filePath = MethodsGeneralClass.LoadFiles();
+            List<NotificationMagister> notificationsMag = new List<NotificationMagister>();
 
-            MethodsClass.JsonParse(notifications, jsonExtraStudEdu, this);
+            progressBar1.Visible = true;
+            var rrogress1 = new Progress<int>();
+
+            progressBar1.Value = 0;
+
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClassExtraAndMag.GenerateDocAppExtraAndMag(izv, notificationsMag, progress, filePath));
+            progressBar1.Value = 100;
+
+            MethodsClassExtraAndMag.JsonParseExtraAndMag(notificationsMag, jsonExtraStudEdu, this);
         }
 
         private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
         {
-            MethodsClass.LoadFiles();
+            MethodsGeneralClass.LoadFiles();
             //label23.Text = DateTime.Now.ToShortDateString();
 
-            MethodsClass.JsonParse(notifications, jsonMagistrEdu, this);
+            //MethodsClassExtraAndMag.JsonParseExtraAndMag(notificationsMag, jsonMagistrEdu, this);
         }
 
 
@@ -92,17 +117,11 @@ namespace ScheduleParse
 
             progressBar1.Value = 0;
 
-            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+            notificationFullTimeFromJson = MethodsClassFullTimeEdu.JsonParseDesFullTimeEdu(jsonFullTimeEdu);
 
             var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreateGeneralSchedule(app, notificationFromJson, progress));
+            await System.Threading.Tasks.Task.Run(() => MethodsClassFullTimeEdu.CreateGeneralSchedule(app, notificationFullTimeFromJson, progress));
             progressBar1.Value = 100;
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
 
         }
 
@@ -110,13 +129,13 @@ namespace ScheduleParse
         {
             listViewScheduleTeacher.Clear();
 
-            string result = MethodsClass.WeekDayShort(this);
+            string result = MethodsGeneralClass.WeekDayShort(this);
 
-            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+            notificationFullTimeFromJson = MethodsClassFullTimeEdu.JsonParseDesFullTimeEdu(jsonFullTimeEdu);
 
-            bool parityOfWeek = MethodsClass.ParityOfWeek(this);
+            bool parityOfWeek = MethodsGeneralClass.ParityOfWeek(this);
 
-            var res = notificationFromJson.Where(s => s.teacher.fullname == comboBox1.SelectedItem.ToString()).ToList();
+            var res = notificationFullTimeFromJson.Where(s => s.teacher.fullname == comboBox1.SelectedItem.ToString()).ToList();
 
             listViewScheduleTeacher.Columns.Add("Время");
             listViewScheduleTeacher.Columns.Add("Группа");
@@ -148,17 +167,61 @@ namespace ScheduleParse
 
         private async void ToolStripMenuItemFullTimeEduPersSch_Click(object sender, EventArgs e)
         {
+
             app.Visible = false;
 
             progressBar1.Visible = true;
             progressBar1.Value = 0;
 
-            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+            notificationFullTimeFromJson = MethodsClassFullTimeEdu.JsonParseDesFullTimeEdu(jsonFullTimeEdu);
 
             var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notificationFromJson, progress));
+            await System.Threading.Tasks.Task.Run(() => MethodsClassFullTimeEdu.CreatePersonalScheduleFullTimeEdu(app, notificationFullTimeFromJson, progress));
             progressBar1.Value = 100;
 
+        }
+
+        private void buttonFindExtraEdu_Click(object sender, EventArgs e)
+        {
+            listViewExtraEdu.Clear();
+
+            string result = MethodsGeneralClass.WeekDayShort(this);
+
+            notificationExtraAndMagFromJson = MethodsClassExtraAndMag.JsonParseDesExtraAndMag(jsonExtraStudEdu);
+
+            //bool parityOfWeek = MethodsGeneralClass.ParityOfWeek(this);
+
+            var res = notificationExtraAndMagFromJson.Where(s => s.teacher.fullname == comboBoxExtraEdu.SelectedItem.ToString()).ToList();
+
+            listViewExtraEdu.Columns.Add("Время");
+            listViewExtraEdu.Columns.Add("Группа");
+            listViewExtraEdu.Columns.Add("Аудитория");
+            listViewExtraEdu.Columns.Add("Предмет");
+
+            var dateExtraLes = dateTimePickerExtraEdu.Value.Date.ToShortDateString();  /*dateTimePickerExtraEdu.Value.Day.ToString() + "." + dateTimePickerExtraEdu.Value.Month.ToString();*/
+            dateExtraLes = dateExtraLes.Replace("." + dateTimePickerExtraEdu.Value.Year.ToString(), String.Empty);
+           // MessageBox.Show(dateExtraLes);
+
+            foreach (var r in res)
+            {
+                for (var i = 0; i < r.scheduleList.Count; i++)
+                {
+                    if (/*r.scheduleList[i].days == result && */dateExtraLes == r.scheduleList[i].date)
+                    {
+                        ListViewItem classhoursListViewItem = new ListViewItem(r.scheduleList[i].classhours);
+                        ListViewItem groupListViewItem = new ListViewItem(r.scheduleList[i].group);
+                        ListViewItem audienceListViewItem = new ListViewItem(r.scheduleList[i].audience);
+                        ListViewItem subjectListViewItem = new ListViewItem(r.scheduleList[i].subject);
+
+                        classhoursListViewItem.SubItems.Add(r.scheduleList[i].group);
+                        classhoursListViewItem.SubItems.Add(r.scheduleList[i].audience);
+                        classhoursListViewItem.SubItems.Add(r.scheduleList[i].subject);
+
+                        listViewExtraEdu.Items.AddRange(new ListViewItem[] { classhoursListViewItem });
+                    }
+                }
+                listViewExtraEdu.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            }
         }
     }         
 }
