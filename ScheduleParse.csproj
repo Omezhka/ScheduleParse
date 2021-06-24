@@ -87,6 +87,7 @@
     <Compile Include="MethodsClass.cs" />
     <Compile Include="NotificationFullTImeEdu.cs" />
     <Compile Include="NotificationFullTimeFromJson.cs" />
+    <Compile Include="NotificationMagister.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

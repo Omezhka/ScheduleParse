@@ -18,15 +18,20 @@ namespace ScheduleParse
    {
         static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
         static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
-        static string pathSavePrepods = pathOutput + @"prepods\";
-        static string pathSaveJSON = pathOutput + @"json\";
+
+        static string pathSavePrepods = pathOutput + @"Преподаватели\";
+        static string pathSavePrepodsFullTimeEdu = pathSavePrepods + @"Очная форма обучения\";
+        static string pathSavePrepodsExtraEdu = pathSavePrepods + @"Заочная форма обучения\";
+        static string pathSavePrepodsMagistr = pathSavePrepods + @"Магистратура\";
+
+        static string pathSaveJSON = path + @"json\";
 
         static string filePath;
 
         static string newFileName;
 
         static string writePathJSON;
-        static string json;
+       // static string json;
 
         /// <summary>
         /// Открытие проводника и загрузка документов
@@ -168,7 +173,7 @@ namespace ScheduleParse
                 WriteIndented = true
             };
 
-             json = JsonSerializer.Serialize(notifications, options);
+            var json = JsonSerializer.Serialize(notifications, options);
 
             DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
             if (!dirInfo.Exists)
@@ -382,13 +387,13 @@ namespace ScheduleParse
                     InsertFirstColumnInTable(classhours, tbltst);
 
                     InsertDataInPersonalTeacherSchedule(notificationFullTimeFromJson, classhours, c, tbltst);
-                    DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepods);
+                    DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepodsFullTimeEdu);
                     if (!dirInfo.Exists)
                     {
                         dirInfo.Create();
                     }
 
-                    teacherScheduleTable.SaveAs2(pathSavePrepods + notificationFullTimeFromJson[c].teacher.fullname + ".docx");
+                    teacherScheduleTable.SaveAs2(pathSavePrepodsFullTimeEdu + notificationFullTimeFromJson[c].teacher.fullname + ".docx");
                     progress.Report(c * 4);
                     app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
                     c++;

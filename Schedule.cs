@@ -13,8 +13,7 @@ namespace ScheduleParse
         public Schedule(string s)
         {
             var schedulerRegex = new Regex(Pattern.scheduleItem);
-
-            //Week = schedulerRegex.Match(s).Groups["week"];                      присвоить в другом месте
+       
             subject = schedulerRegex.Match(s).Groups["subject"].ToString().Trim();
             days = schedulerRegex.Match(s).Groups["days"].ToString().Trim();
             classhours = schedulerRegex.Match(s).Groups["classhours"].ToString().Trim();
@@ -30,5 +29,22 @@ namespace ScheduleParse
         public string classhours { get; set; }
         public string audience { get; set; }
         public string group { get; set; }
+    }
+
+    public class ScheduleMagister : Schedule // наследуемся от Schedule и добавляем поле "date"
+    {
+        public ScheduleMagister() { }
+        public ScheduleMagister(string s)
+        {
+            var schedulerRegex = new Regex(Pattern.scheduleItemMagistr);
+
+            subject = schedulerRegex.Match(s).Groups["subject"].ToString().Trim();
+            date = schedulerRegex.Match(s).Groups["date"].ToString().Trim();
+            days = schedulerRegex.Match(s).Groups["days"].ToString().Trim();
+            classhours = schedulerRegex.Match(s).Groups["classhours"].ToString().Trim();
+            audience = schedulerRegex.Match(s).Groups["audience"].ToString().Trim();
+            group = schedulerRegex.Match(s).Groups["group"].ToString().Trim();
+        }
+        public string date { get; set; }
     }
 }

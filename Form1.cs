@@ -100,27 +100,6 @@ namespace ScheduleParse
 
         }
 
-        private async void CreatePersonalScheduleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            app.Visible = false;
-
-            progressBar1.Visible = true;
-            var rrogress1 = new Progress<int>();
-            MethodsClass.GenerateDocApp(izv, notifications, rrogress1);
-            progressBar1.Value = 0;
-
-            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
-
-            var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notificationFromJson, progress));
-            progressBar1.Value = 100;
-
-
-        }
-
-
-
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -165,6 +144,21 @@ namespace ScheduleParse
                 }
                 listViewScheduleTeacher.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
-        }     
+        }
+
+        private async void ToolStripMenuItemFullTimeEduPersSch_Click(object sender, EventArgs e)
+        {
+            app.Visible = false;
+
+            progressBar1.Visible = true;
+            progressBar1.Value = 0;
+
+            notificationFromJson = MethodsClass.JsonParseDes(jsonFullTimeEdu);
+
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClass.CreatePersonalSchedule(app, notificationFromJson, progress));
+            progressBar1.Value = 100;
+
+        }
     }         
 }

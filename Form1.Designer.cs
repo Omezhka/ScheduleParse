@@ -75,6 +75,11 @@ namespace ScheduleParse
             this.label6 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemFullTimeEduPersSch = new System.Windows.Forms.ToolStripMenuItem();
+            this.заочнаяФормаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.магистратураToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -145,17 +150,22 @@ namespace ScheduleParse
             // расписаниеПреподовToolStripMenuItem
             // 
             this.расписаниеПреподовToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CreatePersonalScheduleToolStripMenuItem});
+            this.CreatePersonalScheduleToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.открытьToolStripMenuItem});
             this.расписаниеПреподовToolStripMenuItem.Name = "расписаниеПреподовToolStripMenuItem";
             this.расписаниеПреподовToolStripMenuItem.Size = new System.Drawing.Size(176, 20);
             this.расписаниеПреподовToolStripMenuItem.Text = "Расписание преподавателей";
             // 
             // CreatePersonalScheduleToolStripMenuItem
             // 
+            this.CreatePersonalScheduleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemFullTimeEduPersSch,
+            this.заочнаяФормаToolStripMenuItem,
+            this.магистратураToolStripMenuItem});
             this.CreatePersonalScheduleToolStripMenuItem.Name = "CreatePersonalScheduleToolStripMenuItem";
-            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CreatePersonalScheduleToolStripMenuItem.Text = "Создать";
-            this.CreatePersonalScheduleToolStripMenuItem.Click += new System.EventHandler(this.CreatePersonalScheduleToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -603,6 +613,36 @@ namespace ScheduleParse
             this.progressBar1.TabIndex = 15;
             this.progressBar1.Visible = false;
             // 
+            // открытьToolStripMenuItem
+            // 
+            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.открытьToolStripMenuItem.Text = "Открыть папку";
+            // 
+            // ToolStripMenuItemFullTimeEduPersSch
+            // 
+            this.ToolStripMenuItemFullTimeEduPersSch.Name = "ToolStripMenuItemFullTimeEduPersSch";
+            this.ToolStripMenuItemFullTimeEduPersSch.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemFullTimeEduPersSch.Text = "Очная форма";
+            this.ToolStripMenuItemFullTimeEduPersSch.Click += new System.EventHandler(this.ToolStripMenuItemFullTimeEduPersSch_Click);
+            // 
+            // заочнаяФормаToolStripMenuItem
+            // 
+            this.заочнаяФормаToolStripMenuItem.Name = "заочнаяФормаToolStripMenuItem";
+            this.заочнаяФормаToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.заочнаяФормаToolStripMenuItem.Text = "Заочная форма";
+            // 
+            // магистратураToolStripMenuItem
+            // 
+            this.магистратураToolStripMenuItem.Name = "магистратураToolStripMenuItem";
+            this.магистратураToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.магистратураToolStripMenuItem.Text = "Магистратура";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -680,6 +720,11 @@ namespace ScheduleParse
         public System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
         public System.Windows.Forms.DateTimePicker dateTimePicker1;
         public System.Windows.Forms.ListView listViewScheduleTeacher;
+        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFullTimeEduPersSch;
+        private System.Windows.Forms.ToolStripMenuItem заочнаяФормаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem магистратураToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
