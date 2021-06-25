@@ -37,11 +37,7 @@ namespace ScheduleParse
         public static void GenerateDocAppFullTimeEdu(List<string> izv, List<NotificationFullTimeEdu> notifications, IProgress<int> progress, string filePath)
         {
 
-            if (filePath == String.Empty)
-            {
-                MessageBox.Show("oops");
-            }
-            else
+            if (filePath != String.Empty)
             {
                 Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
                 {
@@ -156,30 +152,35 @@ namespace ScheduleParse
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
                 WriteIndented = true
             };
+            if(notifications.Count != 0) {
+                var json = JsonSerializer.Serialize(notifications, options);
 
-            var json = JsonSerializer.Serialize(notifications, options);
-
-            DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
-            if (!dirInfo.Exists)
-            {
-                dirInfo.Create();
-            }
-
-            var writePathJSON = pathSaveJSON + formEdu + ".txt";
-
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(writePathJSON, false, System.Text.Encoding.Default))
+                DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
+                if (!dirInfo.Exists)
                 {
-                    sw.WriteLine(json);
+                    dirInfo.Create();
                 }
 
-            }
-            catch (Exception e)
+                var writePathJSON = pathSaveJSON + formEdu + ".txt";
+
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(writePathJSON, false, System.Text.Encoding.Default))
+                    {
+                        sw.WriteLine(json);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                FillingComboBoxFullTimeEdu(JsonParseDesFullTimeEdu(formEdu), formEdu, form);
+            } else
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show("Вы не выбрали ни одного файла!",notifications.Count.ToString());
             }
-            FillingComboBoxFullTimeEdu(JsonParseDesFullTimeEdu(formEdu), formEdu, form);
+
 
         }
 

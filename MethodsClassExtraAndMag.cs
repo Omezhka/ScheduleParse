@@ -26,7 +26,7 @@ namespace ScheduleParse
 
         static string pathSaveJSON = path + @"json\";
 
-        static string newFileName;
+        static string newFileName = String.Empty;
 
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace ScheduleParse
                 Document doc = app.Documents.OpenNoRepairDialog(filePath);
                 try
                 {
-                    MethodsGeneralClass.Convert2txt(doc, path);
+                    newFileName = MethodsGeneralClass.Convert2txt(doc, path);
                 }
                 catch (Exception e)
                 {
