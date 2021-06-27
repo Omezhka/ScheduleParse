@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Text.Unicode;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ScheduleParse
 {
@@ -146,32 +147,39 @@ namespace ScheduleParse
                 WriteIndented = true
             };
 
-            var json = JsonSerializer.Serialize(notificationsMag, options);
-
-            DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
-            if (!dirInfo.Exists)
+            if (notificationsMag.Count != 0)
             {
-                dirInfo.Create();
-            }
 
-            var writePathJSON = pathSaveJSON + formEdu + ".txt";
+                    var json = JsonSerializer.Serialize(notificationsMag, options);
 
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(writePathJSON, false, System.Text.Encoding.Default))
+                DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
+                if (!dirInfo.Exists)
                 {
-                    sw.WriteLine(json);
+                    dirInfo.Create();
                 }
 
-            }
-            catch (Exception e)
+                var writePathJSON = pathSaveJSON + formEdu + ".txt";
+
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(writePathJSON, false, System.Text.Encoding.Default))
+                    {
+                        sw.WriteLine(json);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                FillingComboBoxMagEdu(JsonParseDesMagEdu(formEdu), formEdu, form);
+            } else
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show("Вы не выбрали ни одного файла!", notificationsMag.Count.ToString());
             }
 
-            FillingComboBoxMagEdu(JsonParseDesMagEdu(formEdu), formEdu, form);
-
-        }
+}
 
         static public void FillingComboBoxMagEdu(List<NotificationMagisterFromJson> notificationMagEduFromJson, string formEdu, Form1 form)
         {
@@ -230,9 +238,9 @@ namespace ScheduleParse
         /// <summary>
         /// Создание персонального расписания каждого преподавателя
         /// </summary>
-        public static void CreatePersonalScheduleMagEdu(Application app, List<NotificationMagisterFromJson> notificationMagEduFromJson, IProgress<int> progress)
+        public static void CreatePersonalScheduleMagEdu(Microsoft.Office.Interop.Word.Application app, List<NotificationMagisterFromJson> notificationMagEduFromJson, IProgress<int> progress)
         {
-            app.Visible = false;
+           // app.Visible = false;
             List<string> classhours = Classhours();
 
             int c = 0;

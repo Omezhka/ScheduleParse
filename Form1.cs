@@ -25,7 +25,7 @@ namespace ScheduleParse
         List<NotificationMagisterExtraEduFromJson> notificationExtraFromJson = new List<NotificationMagisterExtraEduFromJson>();
         List<NotificationMagisterFromJson> notificationMagFromJson = new List<NotificationMagisterFromJson>();
 
-        Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+       
 
         string jsonFullTimeEdu = "jsonFullTimeEdu";
         string jsonExtraStudEdu = "jsonExtraStudEdu";
@@ -98,7 +98,7 @@ namespace ScheduleParse
             progressBar1.Value = 100;
 
             MethodsClassExtraEdu.JsonParseExtraEdu(notificationsMag, jsonExtraStudEdu, this);
-            notificationsMag.Clear();
+            
         }
 
         private async void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
@@ -114,12 +114,13 @@ namespace ScheduleParse
             progressBar1.Value = 100;
 
             MethodsClassMagEdu.JsonParseMagEdu(notificationsMag, jsonMagistrEdu, this);
-            notificationsMag.Clear();
+          
         }
 
 
         private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
         {
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
             app.Visible = true;
             progressBar1.Visible = true;
 
@@ -130,6 +131,7 @@ namespace ScheduleParse
             var progress = new Progress<int>(x => progressBar1.Value = x);
             await System.Threading.Tasks.Task.Run(() => MethodsClassFullTimeEdu.CreateGeneralSchedule(app, notificationFullTimeFromJson, progress));
             progressBar1.Value = 100;
+
 
         }
 
@@ -174,7 +176,7 @@ namespace ScheduleParse
 
         private async void ToolStripMenuItemFullTimeEduPersSch_Click(object sender, EventArgs e)
         {
-
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
             app.Visible = false;
 
             progressBar1.Visible = true;
@@ -185,7 +187,7 @@ namespace ScheduleParse
             var progress = new Progress<int>(x => progressBar1.Value = x);
             await System.Threading.Tasks.Task.Run(() => MethodsClassFullTimeEdu.CreatePersonalScheduleFullTimeEdu(app, notificationFullTimeFromJson, progress));
             progressBar1.Value = 100;
-
+            app.Quit();
         }
 
         private void buttonFindExtraEdu_Click(object sender, EventArgs e)
@@ -232,16 +234,18 @@ namespace ScheduleParse
         }
         private async void ToolStripMenuItemExtraEduPersSch_Click(object sender, EventArgs e)
         {
-            //app.Visible = false;
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+            app.Visible = false;
 
             progressBar1.Visible = true;
             progressBar1.Value = 0;
 
-            notificationExtraFromJson = MethodsClassExtraEdu.JsonParseDesExtraEdu(jsonFullTimeEdu);
+            notificationExtraFromJson = MethodsClassExtraEdu.JsonParseDesExtraEdu(jsonExtraStudEdu);
 
             var progress = new Progress<int>(x => progressBar1.Value = x);
             await System.Threading.Tasks.Task.Run(() => MethodsClassExtraEdu.CreatePersonalScheduleExtraEdu(app, notificationExtraFromJson, progress));
             progressBar1.Value = 100;
+            app.Quit();
         }
 
         private void buttonFindMagEdu_Click(object sender, EventArgs e)
@@ -288,6 +292,7 @@ namespace ScheduleParse
 
         private async void ToolStripMenuItemMagEduPersSch_Click(object sender, EventArgs e)
         {
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
             app.Visible = false;
 
             progressBar1.Visible = true;
@@ -298,6 +303,7 @@ namespace ScheduleParse
             var progress = new Progress<int>(x => progressBar1.Value = x);
             await System.Threading.Tasks.Task.Run(() => MethodsClassMagEdu.CreatePersonalScheduleMagEdu(app, notificationMagFromJson, progress));
             progressBar1.Value = 100;
+            app.Quit();
         }
     }         
 }

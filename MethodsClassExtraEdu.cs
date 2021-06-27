@@ -147,7 +147,10 @@ namespace ScheduleParse
                 WriteIndented = true
             };
 
-            var json = JsonSerializer.Serialize(notificationsMag, options);
+            if (notificationsMag.Count != 0)
+            {
+
+                var json = JsonSerializer.Serialize(notificationsMag, options);
 
             DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
             if (!dirInfo.Exists)
@@ -171,6 +174,11 @@ namespace ScheduleParse
             }
 
             FillingComboBoxExtraEdu(JsonParseDesExtraEdu(formEdu), formEdu, form);
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали ни одного файла!", notificationsMag.Count.ToString());
+            }
 
         }
 
