@@ -17,8 +17,6 @@ namespace ScheduleParse
     public partial class Form1 : Form
     {
 
- 
-       
         List<string> izv = new List<string>();
 
         List<NotificationFullTimeFromJson> notificationFullTimeFromJson = new List<NotificationFullTimeFromJson>();
@@ -55,7 +53,20 @@ namespace ScheduleParse
 
             if (notificationExtraFromJson.Count != 0)
             {
-                MethodsClassExtraEdu.FillingComboBoxExtraEdu(notificationExtraFromJson, jsonFullTimeEdu, this);
+                MethodsClassExtraEdu.FillingComboBoxExtraEdu(notificationExtraFromJson, jsonExtraStudEdu, this);
+            }
+            else
+            {
+                comboBoxExtraEdu.Text = "Не загружено расписание";
+                comboBoxExtraEdu.Enabled = false;
+            }
+
+
+            notificationMagFromJson = MethodsClassMagEdu.JsonParseDesMagEdu(jsonMagistrEdu);
+
+            if (notificationMagFromJson.Count != 0)
+            {
+                MethodsClassMagEdu.FillingComboBoxMagEdu(notificationMagFromJson, jsonMagistrEdu, this);
             }
             else
             {
@@ -304,6 +315,15 @@ namespace ScheduleParse
             await System.Threading.Tasks.Task.Run(() => MethodsClassMagEdu.CreatePersonalScheduleMagEdu(app, notificationMagFromJson, progress));
             progressBar1.Value = 100;
             app.Quit();
+        }
+
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+             string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
+
+             string pathSavePrepods = pathOutput + @"Преподаватели\";
+
+            System.Diagnostics.Process.Start(pathSavePrepods);
         }
     }         
 }

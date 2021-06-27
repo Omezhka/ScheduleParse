@@ -21,8 +21,7 @@ namespace ScheduleParse
 
         static string pathSavePrepods = pathOutput + @"Преподаватели\";
         static string pathSavePrepodsFullTimeEdu = pathSavePrepods + @"Очная форма обучения\";
-        static string pathSavePrepodsExtraEdu = pathSavePrepods + @"Заочная форма обучения\";
-        static string pathSavePrepodsMagistr = pathSavePrepods + @"Магистратура\";
+
 
         static string pathSaveJSON = path + @"json\";
 
