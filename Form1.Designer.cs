@@ -40,8 +40,8 @@ namespace ScheduleParse
             this.расписаниеПреподовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreatePersonalScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemFullTimeEduPersSch = new System.Windows.Forms.ToolStripMenuItem();
-            this.заочнаяФормаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.магистратураToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemExtraEduPersSch = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemMagEdu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -66,12 +66,10 @@ namespace ScheduleParse
             this.label13 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.listView2 = new System.Windows.Forms.ListView();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button2 = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.listViewMagEdu = new System.Windows.Forms.ListView();
+            this.buttonFindMagEdu = new System.Windows.Forms.Button();
+            this.comboBoxMagEdu = new System.Windows.Forms.ComboBox();
+            this.dateTimePickerMagEdu = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -159,40 +157,42 @@ namespace ScheduleParse
             // 
             this.CreatePersonalScheduleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemFullTimeEduPersSch,
-            this.заочнаяФормаToolStripMenuItem,
-            this.магистратураToolStripMenuItem});
+            this.ToolStripMenuItemExtraEduPersSch,
+            this.ToolStripMenuItemMagEdu});
             this.CreatePersonalScheduleToolStripMenuItem.Name = "CreatePersonalScheduleToolStripMenuItem";
-            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.CreatePersonalScheduleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CreatePersonalScheduleToolStripMenuItem.Text = "Создать";
             // 
             // ToolStripMenuItemFullTimeEduPersSch
             // 
             this.ToolStripMenuItemFullTimeEduPersSch.Name = "ToolStripMenuItemFullTimeEduPersSch";
-            this.ToolStripMenuItemFullTimeEduPersSch.Size = new System.Drawing.Size(161, 22);
+            this.ToolStripMenuItemFullTimeEduPersSch.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemFullTimeEduPersSch.Text = "Очная форма";
             this.ToolStripMenuItemFullTimeEduPersSch.Click += new System.EventHandler(this.ToolStripMenuItemFullTimeEduPersSch_Click);
             // 
-            // заочнаяФормаToolStripMenuItem
+            // ToolStripMenuItemExtraEduPersSch
             // 
-            this.заочнаяФормаToolStripMenuItem.Name = "заочнаяФормаToolStripMenuItem";
-            this.заочнаяФормаToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.заочнаяФормаToolStripMenuItem.Text = "Заочная форма";
+            this.ToolStripMenuItemExtraEduPersSch.Name = "ToolStripMenuItemExtraEduPersSch";
+            this.ToolStripMenuItemExtraEduPersSch.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemExtraEduPersSch.Text = "Заочная форма";
+            this.ToolStripMenuItemExtraEduPersSch.Click += new System.EventHandler(this.ToolStripMenuItemExtraEduPersSch_Click);
             // 
-            // магистратураToolStripMenuItem
+            // ToolStripMenuItemMagEdu
             // 
-            this.магистратураToolStripMenuItem.Name = "магистратураToolStripMenuItem";
-            this.магистратураToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.магистратураToolStripMenuItem.Text = "Магистратура";
+            this.ToolStripMenuItemMagEdu.Name = "ToolStripMenuItemMagEdu";
+            this.ToolStripMenuItemMagEdu.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMagEdu.Text = "Магистратура";
+            this.ToolStripMenuItemMagEdu.Click += new System.EventHandler(this.ToolStripMenuItemMagEduPersSch_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.открытьToolStripMenuItem.Text = "Открыть папку";
             // 
             // tabControl1
@@ -472,10 +472,10 @@ namespace ScheduleParse
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.listView2);
-            this.tabPage3.Controls.Add(this.button2);
-            this.tabPage3.Controls.Add(this.comboBox3);
-            this.tabPage3.Controls.Add(this.dateTimePicker3);
+            this.tabPage3.Controls.Add(this.listViewMagEdu);
+            this.tabPage3.Controls.Add(this.buttonFindMagEdu);
+            this.tabPage3.Controls.Add(this.comboBoxMagEdu);
+            this.tabPage3.Controls.Add(this.dateTimePickerMagEdu);
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Controls.Add(this.label5);
@@ -489,70 +489,57 @@ namespace ScheduleParse
             this.tabPage3.Text = "Институт магистратуры";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // listView2
+            // listViewMagEdu
             // 
-            this.listView2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.listView2.AutoArrange = false;
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader6});
-            this.listView2.GridLines = true;
-            this.listView2.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(20, 137);
-            this.listView2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(543, 242);
-            this.listView2.TabIndex = 58;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
+            this.listViewMagEdu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.listViewMagEdu.AutoArrange = false;
+            this.listViewMagEdu.GridLines = true;
+            this.listViewMagEdu.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewMagEdu.HideSelection = false;
+            this.listViewMagEdu.Location = new System.Drawing.Point(20, 137);
+            this.listViewMagEdu.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.listViewMagEdu.Name = "listViewMagEdu";
+            this.listViewMagEdu.Size = new System.Drawing.Size(543, 242);
+            this.listViewMagEdu.TabIndex = 58;
+            this.listViewMagEdu.UseCompatibleStateImageBehavior = false;
+            this.listViewMagEdu.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader5
+            // buttonFindMagEdu
             // 
-            this.columnHeader5.Text = "";
-            this.columnHeader5.Width = 90;
+            this.buttonFindMagEdu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonFindMagEdu.AutoSize = true;
+            this.buttonFindMagEdu.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFindMagEdu.Location = new System.Drawing.Point(438, 88);
+            this.buttonFindMagEdu.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonFindMagEdu.Name = "buttonFindMagEdu";
+            this.buttonFindMagEdu.Size = new System.Drawing.Size(125, 27);
+            this.buttonFindMagEdu.TabIndex = 57;
+            this.buttonFindMagEdu.Text = "Найти";
+            this.buttonFindMagEdu.UseVisualStyleBackColor = true;
+            this.buttonFindMagEdu.Click += new System.EventHandler(this.buttonFindMagEdu_Click);
             // 
-            // columnHeader6
+            // comboBoxMagEdu
             // 
-            this.columnHeader6.Text = "Занятия";
-            this.columnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader6.Width = 350;
+            this.comboBoxMagEdu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.comboBoxMagEdu.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxMagEdu.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxMagEdu.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.comboBoxMagEdu.FormattingEnabled = true;
+            this.comboBoxMagEdu.Location = new System.Drawing.Point(205, 48);
+            this.comboBoxMagEdu.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.comboBoxMagEdu.Name = "comboBoxMagEdu";
+            this.comboBoxMagEdu.Size = new System.Drawing.Size(357, 21);
+            this.comboBoxMagEdu.Sorted = true;
+            this.comboBoxMagEdu.TabIndex = 56;
             // 
-            // button2
+            // dateTimePickerMagEdu
             // 
-            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.button2.AutoSize = true;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(438, 88);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(125, 27);
-            this.button2.TabIndex = 57;
-            this.button2.Text = "Найти";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.comboBox3.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBox3.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(205, 48);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(357, 21);
-            this.comboBox3.Sorted = true;
-            this.comboBox3.TabIndex = 56;
-            // 
-            // dateTimePicker3
-            // 
-            this.dateTimePicker3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.dateTimePicker3.Location = new System.Drawing.Point(206, 91);
-            this.dateTimePicker3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(227, 20);
-            this.dateTimePicker3.TabIndex = 55;
+            this.dateTimePickerMagEdu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.dateTimePickerMagEdu.Location = new System.Drawing.Point(206, 91);
+            this.dateTimePickerMagEdu.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.dateTimePickerMagEdu.Name = "dateTimePickerMagEdu";
+            this.dateTimePickerMagEdu.Size = new System.Drawing.Size(227, 20);
+            this.dateTimePickerMagEdu.TabIndex = 55;
             // 
             // label3
             // 
@@ -662,7 +649,6 @@ namespace ScheduleParse
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuUpdate;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFullTimeEdu;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExtraStud;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMagistr;
         private System.Windows.Forms.ToolStripMenuItem формированиеРасписанияНаСтендToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem расписаниеПреподовToolStripMenuItem;
@@ -686,27 +672,26 @@ namespace ScheduleParse
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ListView listView2;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.Button button2;
-        public System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.ListView listViewMagEdu;
+        private System.Windows.Forms.Button buttonFindMagEdu;
+        public System.Windows.Forms.ComboBox comboBoxMagEdu;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label14;
         public System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
         public System.Windows.Forms.DateTimePicker dateTimePicker1;
         public System.Windows.Forms.ListView listViewScheduleTeacher;
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFullTimeEduPersSch;
-        private System.Windows.Forms.ToolStripMenuItem заочнаяФормаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem магистратураToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExtraEduPersSch;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMagEdu;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         public System.Windows.Forms.DateTimePicker dateTimePickerExtraEdu;
         public System.Windows.Forms.Label label13;
+        public System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExtraStud;
+        public System.Windows.Forms.DateTimePicker dateTimePickerMagEdu;
+        public System.Windows.Forms.Label label6;
     }
 }
 

@@ -14,15 +14,13 @@ using System.Windows.Forms;
 
 namespace ScheduleParse
 {
-    public static class MethodsClassExtraAndMag
+    public static class MethodsClassExtraEdu
     {
         static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
         static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
 
         static string pathSavePrepods = pathOutput + @"Преподаватели\";
-        static string pathSavePrepodsFullTimeEdu = pathSavePrepods + @"Очная форма обучения\";
         static string pathSavePrepodsExtraEdu = pathSavePrepods + @"Заочная форма обучения\";
-        static string pathSavePrepodsMagistr = pathSavePrepods + @"Магистратура\";
 
         static string pathSaveJSON = path + @"json\";
 
@@ -32,13 +30,10 @@ namespace ScheduleParse
         /// <summary>
         /// Создание исходного дока, конвертирование в .txt, создание и заполнение списка notifications, настройка position и форматирование вывода фамилии
         /// </summary>
-        public static void GenerateDocAppExtraAndMag(List<string> izv, List<NotificationMagister> notificationsMag, IProgress<int> progress, string filePath)
+        public static void GenerateDocAppExtraEdu(List<string> izv, List<NotificationMagister> notificationsMag, IProgress<int> progress, string filePath)
         {
-            if (filePath == String.Empty) {
-                MessageBox.Show("oops");
-            }
-            else
-            {
+            if (filePath != String.Empty) {
+                
                 Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
                 {
                     Visible = false
@@ -68,17 +63,13 @@ namespace ScheduleParse
                     }
                 }
 
+                var headerDocExtra = (izv[2].Trim() + " " + izv[3].Trim()+ " "+izv[4].Trim()).ToUpper();
+               
+                File.WriteAllText(path + "saveHeaderDocExtraEdu.txt", headerDocExtra);
 
-                var headerDoc = (izv[2].Trim() + " " + izv[3].Trim()).ToUpper();
+                CreateNotificationsExtraEdu(izv, notificationsMag, progress);
 
-                var headerDocForGeneralSchedule = (izv[2].Trim() + " " + izv[3].Trim()).Replace("расписания Ваших занятий", String.Empty).ToUpper();
-
-                File.WriteAllText(path + "saveHeaderDoc.txt", headerDoc);
-                //  File.WriteAllText(path + "saveheaderDocForGeneralSchedule.txt", headerDocForGeneralSchedule);
-
-                CreateNotificationsExtraAndMag(izv, notificationsMag, progress);
-
-                SettingsFieldNotificationsExtraAndMag(notificationsMag);
+                SettingsFieldNotificationsExtraEdu(notificationsMag);
 
                 app.Quit();
             }
@@ -87,7 +78,7 @@ namespace ScheduleParse
         /// <summary>
         /// Замена сокращенных position на полные и форматирование вывода фио преподавателей
         /// </summary>
-        private static void SettingsFieldNotificationsExtraAndMag(List<NotificationMagister> notificationsMag)
+        private static void SettingsFieldNotificationsExtraEdu(List<NotificationMagister> notificationsMag)
         {
             foreach (var z in notificationsMag)
             {
@@ -117,7 +108,7 @@ namespace ScheduleParse
         /// <summary>
         /// Создание и заполнение списка notifications
         /// </summary>
-        private static void CreateNotificationsExtraAndMag(List<string> izv, List<NotificationMagister> notificationsMag, IProgress<int> progress)
+        private static void CreateNotificationsExtraEdu(List<string> izv, List<NotificationMagister> notificationsMag, IProgress<int> progress)
         {
             var regHeader = new Regex(Pattern.headerMagistr);
             int i = 0;
@@ -148,7 +139,7 @@ namespace ScheduleParse
         /// <summary>
         /// Парсинг в json
         /// </summary>
-        public static void JsonParseExtraAndMag(List<NotificationMagister> notificationsMag, string formEdu, Form1 form)
+        public static void JsonParseExtraEdu(List<NotificationMagister> notificationsMag, string formEdu, Form1 form)
         {
             var options = new JsonSerializerOptions
             {
@@ -179,16 +170,16 @@ namespace ScheduleParse
                 Console.WriteLine(e.Message);
             }
 
-            FillingComboBoxExtraAndMag(JsonParseDesExtraAndMag(formEdu), formEdu, form);
+            FillingComboBoxExtraEdu(JsonParseDesExtraEdu(formEdu), formEdu, form);
 
         }
 
-        static public void FillingComboBoxExtraAndMag(List<NotificationMagisterFromJson> notificationExtraAndMagFromJson, string formEdu, Form1 form)
+        static public void FillingComboBoxExtraEdu(List<NotificationMagisterExtraEduFromJson> notificationExtraEduFromJson, string formEdu, Form1 form)
         {
 
-            if (notificationExtraAndMagFromJson.Count == 0) { notificationExtraAndMagFromJson = JsonParseDesExtraAndMag(formEdu); }
+            if (notificationExtraEduFromJson.Count == 0) { notificationExtraEduFromJson = JsonParseDesExtraEdu(formEdu); }
 
-            foreach (var item in notificationExtraAndMagFromJson)
+            foreach (var item in notificationExtraEduFromJson)
             {
                 form.comboBoxExtraEdu.Items.Add(item.teacher.fullname.ToString());
             }
@@ -203,19 +194,19 @@ namespace ScheduleParse
 
         }
 
-        public static List<NotificationMagisterFromJson> JsonParseDesExtraAndMag(string formEdu)
+        public static List<NotificationMagisterExtraEduFromJson> JsonParseDesExtraEdu(string formEdu)
         {
-            List<NotificationMagisterFromJson> notificationExtraAndMagFromJson = new List<NotificationMagisterFromJson>();
+            List<NotificationMagisterExtraEduFromJson> notificationExtraEduFromJson = new List<NotificationMagisterExtraEduFromJson>();
 
             if (File.Exists(pathSaveJSON + formEdu + ".txt"))
             {
                 var JSONtxt = File.ReadAllText(pathSaveJSON + formEdu + ".txt", Encoding.Default);
 
-                notificationExtraAndMagFromJson = JsonSerializer.Deserialize<List<NotificationMagisterFromJson>>(JSONtxt);
+                notificationExtraEduFromJson = JsonSerializer.Deserialize<List<NotificationMagisterExtraEduFromJson>>(JSONtxt);
 
             }
 
-            return notificationExtraAndMagFromJson;
+            return notificationExtraEduFromJson;
         }
 
         /// <summary>
@@ -240,16 +231,16 @@ namespace ScheduleParse
         /// <summary>
         /// Создание персонального расписания каждого преподавателя
         /// </summary>
-        public static void CreatePersonalScheduleFullTimeEdu(Microsoft.Office.Interop.Word.Application app, List<NotificationMagisterFromJson> notificationExtraAndMagFromJsons, IProgress<int> progress)
+        public static void CreatePersonalScheduleExtraEdu(Microsoft.Office.Interop.Word.Application app, List<NotificationMagisterExtraEduFromJson> notificationExtraEduFromJson, IProgress<int> progress)
         {
             //app.Visible = false;
             List<string> classhours = Classhours();
 
             int c = 0;
 
-            if (c <= notificationExtraAndMagFromJsons.Count)
+            if (c <= notificationExtraEduFromJson.Count)
             {
-                foreach (var variable in notificationExtraAndMagFromJsons)
+                foreach (var variable in notificationExtraEduFromJson)
                 {
                     Document teacherScheduleTable = app.Documents.Add();
 
@@ -259,7 +250,7 @@ namespace ScheduleParse
 
                     Range rngtst = teacherScheduleTable.Paragraphs[1].Range;
 
-                    var headerDoc = File.ReadAllText(path + "saveheaderDoc.txt", Encoding.UTF8);
+                    var headerDoc = File.ReadAllText(path + "saveHeaderDocExtraEdu.txt", Encoding.UTF8);
 
                     rngtst.InsertBefore(headerDoc);
                     rngtst.InsertParagraphAfter();
@@ -286,14 +277,15 @@ namespace ScheduleParse
 
                     InsertFirstColumnInTable(classhours, tbltst);
 
-                    InsertDataInPersonalTeacherSchedule(notificationExtraAndMagFromJsons, classhours, c, tbltst);
-                    DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepodsFullTimeEdu);
+                    InsertDataInPersonalTeacherSchedule(notificationExtraEduFromJson, classhours, c, tbltst);
+
+                    DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepodsExtraEdu);
                     if (!dirInfo.Exists)
                     {
                         dirInfo.Create();
                     }
 
-                    teacherScheduleTable.SaveAs2(pathSavePrepodsFullTimeEdu + notificationExtraAndMagFromJsons[c].teacher.fullname + ".docx");
+                    teacherScheduleTable.SaveAs2(pathSavePrepodsExtraEdu + notificationExtraEduFromJson[c].teacher.fullname + ".docx");
                     progress.Report(c * 4);
                     app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
                     c++;
@@ -313,7 +305,8 @@ namespace ScheduleParse
                     "11.50-13.20",
                     "13.50-15.20",
                     "15.30-17.00",
-                    "17.10-18.40"
+                    "17.10-18.40",
+                    "18.45-20.15"
             };
         }
 
@@ -359,27 +352,20 @@ namespace ScheduleParse
         /// <summary>
         /// Добавление данных в таблицу с индивидуальным расписанием преподавателя
         /// </summary>
-        private static void InsertDataInPersonalTeacherSchedule(List<NotificationMagisterFromJson> notificationExtraAndMagFromJson, List<string> classhours, int c, Table tbltst)
+        private static void InsertDataInPersonalTeacherSchedule(List<NotificationMagisterExtraEduFromJson> notificationExtraEduFromJson, List<string> classhours, int c, Table tbltst)
         {
-            for (var k = 0; k < notificationExtraAndMagFromJson[c].scheduleList.Count; k++) //столбец
+            for (var k = 0; k < notificationExtraEduFromJson[c].scheduleList.Count; k++) //столбец
             {
-                int indexDayPosition = week().IndexOf(notificationExtraAndMagFromJson[c].scheduleList[k].days);
-                int indexClasshoursPosition = classhours.IndexOf(notificationExtraAndMagFromJson[c].scheduleList[k].classhours);
+                int indexDayPosition = week().IndexOf(notificationExtraEduFromJson[c].scheduleList[k].days);
+                int indexClasshoursPosition = classhours.IndexOf(notificationExtraEduFromJson[c].scheduleList[k].classhours);
 
                 tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
 
-                if (notificationExtraAndMagFromJson[c].scheduleList[k].Week)
-                {
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"чет:"} {notificationExtraAndMagFromJson[c].teacher.fullname } " +
-                                                                                                     $"{notificationExtraAndMagFromJson[c].scheduleList[k].group } " +
-                                                                                                     $"{"a." + notificationExtraAndMagFromJson[c].scheduleList[k].audience }\r\n");
-                }
-                else
-                {
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"нечет:"} {notificationExtraAndMagFromJson[c].teacher.fullname } " +
-                                                                                                     $"{notificationExtraAndMagFromJson[c].scheduleList[k].group } " +
-                                                                                                     $"{"a." + notificationExtraAndMagFromJson[c].scheduleList[k].audience }\r\n");
-                }
+                
+                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{notificationExtraEduFromJson[c].scheduleList[k].date} {notificationExtraEduFromJson[c].teacher.fullname } " +
+                                                                                                     $"{notificationExtraEduFromJson[c].scheduleList[k].group } " +
+                                                                                                     $"{"a." + notificationExtraEduFromJson[c].scheduleList[k].audience }\r\n");
+                
             }
         }
 
@@ -389,62 +375,6 @@ namespace ScheduleParse
         private static void PageSetupOrientational(Document teacherScheduleTable)
         {
             teacherScheduleTable.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
-        }
-
-      
-        /// <summary>
-        /// Сокращение дней недели для поиска  
-        /// </summary>
-        static public string WeekDayShort(Form1 form)
-        {
-            string result = "";
-
-            switch (form.dateTimePickerExtraEdu.Value.DayOfWeek.ToString())
-            {
-                case "Monday":
-                    result = MethodsClassFullTimeEdu.week()[0];
-                    break;
-
-                case "Tuesday":
-                    result = MethodsClassFullTimeEdu.week()[1];
-                    break;
-
-                case "Wednesday":
-                    result = MethodsClassFullTimeEdu.week()[2];
-                    break;
-
-                case "Thursday":
-                    result = MethodsClassFullTimeEdu.week()[3];
-                    break;
-
-                case "Friday":
-                    result = MethodsClassFullTimeEdu.week()[4];
-                    break;
-
-                case "Saturday":
-                    result = MethodsClassFullTimeEdu.week()[5];
-                    break;
-            }
-
-            return result;
-        }
-        static public bool ParityOfWeek(Form1 form)
-        {
-            DateTimeFormatInfo dateTimeFormatInfo = DateTimeFormatInfo.CurrentInfo;
-            Calendar cal = dateTimeFormatInfo.Calendar;
-            bool parityOfWeek;
-            var date = cal.GetWeekOfYear(DateTime.Parse(form.dateTimePickerExtraEdu.Value.ToString()), CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
-
-            if (date % 2 == 0)
-            {
-                parityOfWeek = true;
-            }
-            else
-            {
-                parityOfWeek = false;
-            }
-
-            return parityOfWeek;
         }
 
     }

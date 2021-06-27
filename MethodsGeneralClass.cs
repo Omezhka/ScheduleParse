@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,6 +98,12 @@ namespace ScheduleParse
         public static string Convert2txt(Document doc, string path)
         {
             var newFileName = String.Empty;
+
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
 
             if (doc.Name.Contains(".docx"))
             {

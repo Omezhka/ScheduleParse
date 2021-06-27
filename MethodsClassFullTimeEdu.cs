@@ -28,7 +28,7 @@ namespace ScheduleParse
 
         static string newFileName = String.Empty;
 
-       static string headerDoc = String.Empty;
+       static string headerDocFullTimeEdu = String.Empty;
         static string headerDocForGeneralSchedule = String.Empty;
 
         /// <summary>
@@ -69,11 +69,14 @@ namespace ScheduleParse
                 }
 
 
-                headerDoc = (izv[2].Trim() + " " + izv[3].Trim()).ToUpper();
+                headerDocFullTimeEdu = (izv[2].Trim() + " " + izv[3].Trim()).ToUpper();
 
                 headerDocForGeneralSchedule = (izv[2].Trim() + " " + izv[3].Trim()).Replace("расписания Ваших занятий", String.Empty).ToUpper();
 
-                File.WriteAllText(path + "saveHeaderDoc.txt", headerDoc);
+                MessageBox.Show(headerDocFullTimeEdu);
+                MessageBox.Show(headerDocForGeneralSchedule);
+
+                File.WriteAllText(path + "saveHeaderDocFullTimeEdu.txt", headerDocFullTimeEdu);
                 File.WriteAllText(path + "saveheaderDocForGeneralSchedule.txt", headerDocForGeneralSchedule);
 
                 CreateNotificationsFullTimeEdu(izv, notifications, progress);
@@ -344,7 +347,7 @@ namespace ScheduleParse
 
                     Range rngtst = teacherScheduleTable.Paragraphs[1].Range;
 
-                    var headerDoc = File.ReadAllText(path + "saveheaderDoc.txt", Encoding.UTF8);
+                    var headerDoc = File.ReadAllText(path + "saveHeaderDocFullTimeEdu.txt", Encoding.UTF8);
 
                     rngtst.InsertBefore(headerDoc);
                     rngtst.InsertParagraphAfter();

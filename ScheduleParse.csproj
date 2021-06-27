@@ -84,12 +84,14 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MethodsClassExtraAndMag.cs" />
+    <Compile Include="MethodsClassExtraEdu.cs" />
     <Compile Include="MethodsClassFullTimeEdu.cs" />
+    <Compile Include="MethodsClassMagEdu.cs" />
     <Compile Include="MethodsGeneralClass.cs" />
     <Compile Include="NotificationFullTImeEdu.cs" />
     <Compile Include="NotificationFullTimeFromJson.cs" />
     <Compile Include="NotificationMagister.cs" />
+    <Compile Include="NotificationMagisterExtraEduFromJson.cs" />
     <Compile Include="NotificationMagisterFromJson.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Program.cs" />

@@ -22,7 +22,8 @@ namespace ScheduleParse
         List<string> izv = new List<string>();
 
         List<NotificationFullTimeFromJson> notificationFullTimeFromJson = new List<NotificationFullTimeFromJson>();
-        List<NotificationMagisterFromJson> notificationExtraAndMagFromJson = new List<NotificationMagisterFromJson>();
+        List<NotificationMagisterExtraEduFromJson> notificationExtraFromJson = new List<NotificationMagisterExtraEduFromJson>();
+        List<NotificationMagisterFromJson> notificationMagFromJson = new List<NotificationMagisterFromJson>();
 
         Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
 
@@ -50,11 +51,11 @@ namespace ScheduleParse
                 comboBox1.Enabled = false;
             }
 
-            notificationExtraAndMagFromJson = MethodsClassExtraAndMag.JsonParseDesExtraAndMag(jsonExtraStudEdu);
+            notificationExtraFromJson = MethodsClassExtraEdu.JsonParseDesExtraEdu(jsonExtraStudEdu);
 
-            if (notificationExtraAndMagFromJson.Count != 0)
+            if (notificationExtraFromJson.Count != 0)
             {
-                MethodsClassExtraAndMag.FillingComboBoxExtraAndMag(notificationExtraAndMagFromJson, jsonFullTimeEdu, this);
+                MethodsClassExtraEdu.FillingComboBoxExtraEdu(notificationExtraFromJson, jsonFullTimeEdu, this);
             }
             else
             {
@@ -85,29 +86,36 @@ namespace ScheduleParse
 
         private async void toolStripMenuItemExtraStud_Click(object sender, EventArgs e)
         {
+            izv.Clear();
             var filePath = MethodsGeneralClass.LoadFiles();
             List<NotificationMagister> notificationsMag = new List<NotificationMagister>();
-
+           
             progressBar1.Visible = true;
-            var rrogress1 = new Progress<int>();
-
             progressBar1.Value = 0;
 
             var progress = new Progress<int>(x => progressBar1.Value = x);
-            await System.Threading.Tasks.Task.Run(() => MethodsClassExtraAndMag.GenerateDocAppExtraAndMag(izv, notificationsMag, progress, filePath));
+            await System.Threading.Tasks.Task.Run(() => MethodsClassExtraEdu.GenerateDocAppExtraEdu(izv, notificationsMag, progress, filePath));
             progressBar1.Value = 100;
 
-            MethodsClassExtraAndMag.JsonParseExtraAndMag(notificationsMag, jsonExtraStudEdu, this);
+            MethodsClassExtraEdu.JsonParseExtraEdu(notificationsMag, jsonExtraStudEdu, this);
+            notificationsMag.Clear();
         }
 
-        private void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
+        private async void toolStripMenuItemMagistr_Click(object sender, EventArgs e)
         {
-            MethodsGeneralClass.LoadFiles();
-            //label23.Text = DateTime.Now.ToShortDateString();
+            izv.Clear();
+            var filePath = MethodsGeneralClass.LoadFiles();
+            List<NotificationMagister> notificationsMag = new List<NotificationMagister>();
+            progressBar1.Visible = true;
+            progressBar1.Value = 0;
 
-            //MethodsClassExtraAndMag.JsonParseExtraAndMag(notificationsMag, jsonMagistrEdu, this);
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClassMagEdu.GenerateDocAppMagEdu(izv, notificationsMag, progress, filePath));
+            progressBar1.Value = 100;
+
+            MethodsClassMagEdu.JsonParseMagEdu(notificationsMag, jsonMagistrEdu, this);
+            notificationsMag.Clear();
         }
-
 
 
         private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
@@ -141,7 +149,6 @@ namespace ScheduleParse
             listViewScheduleTeacher.Columns.Add("Группа");
             listViewScheduleTeacher.Columns.Add("Аудитория");
             listViewScheduleTeacher.Columns.Add("Предмет");
-
 
             foreach (var r in res)
             {
@@ -187,11 +194,11 @@ namespace ScheduleParse
 
             string result = MethodsGeneralClass.WeekDayShort(this);
 
-            notificationExtraAndMagFromJson = MethodsClassExtraAndMag.JsonParseDesExtraAndMag(jsonExtraStudEdu);
+            notificationExtraFromJson = MethodsClassExtraEdu.JsonParseDesExtraEdu(jsonExtraStudEdu);
 
             //bool parityOfWeek = MethodsGeneralClass.ParityOfWeek(this);
 
-            var res = notificationExtraAndMagFromJson.Where(s => s.teacher.fullname == comboBoxExtraEdu.SelectedItem.ToString()).ToList();
+            var res = notificationExtraFromJson.Where(s => s.teacher.fullname == comboBoxExtraEdu.SelectedItem.ToString()).ToList();
 
             listViewExtraEdu.Columns.Add("Время");
             listViewExtraEdu.Columns.Add("Группа");
@@ -222,6 +229,75 @@ namespace ScheduleParse
                 }
                 listViewExtraEdu.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
+        }
+        private async void ToolStripMenuItemExtraEduPersSch_Click(object sender, EventArgs e)
+        {
+            //app.Visible = false;
+
+            progressBar1.Visible = true;
+            progressBar1.Value = 0;
+
+            notificationExtraFromJson = MethodsClassExtraEdu.JsonParseDesExtraEdu(jsonFullTimeEdu);
+
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClassExtraEdu.CreatePersonalScheduleExtraEdu(app, notificationExtraFromJson, progress));
+            progressBar1.Value = 100;
+        }
+
+        private void buttonFindMagEdu_Click(object sender, EventArgs e)
+        {
+            listViewMagEdu.Clear();
+
+            string result = MethodsGeneralClass.WeekDayShort(this);
+
+            notificationMagFromJson = MethodsClassMagEdu.JsonParseDesMagEdu(jsonMagistrEdu);
+
+ 
+
+            var res = notificationMagFromJson.Where(s => s.teacher.fullname == comboBoxMagEdu.SelectedItem.ToString()).ToList();
+
+            listViewMagEdu.Columns.Add("Время");
+            listViewMagEdu.Columns.Add("Группа");
+            listViewMagEdu.Columns.Add("Аудитория");
+            listViewMagEdu.Columns.Add("Предмет");
+
+            var dateMagLes = dateTimePickerMagEdu.Value.Date.ToShortDateString();
+            dateMagLes = dateMagLes.Replace("." + dateTimePickerMagEdu.Value.Year.ToString(), String.Empty);
+
+            foreach (var r in res)
+            {
+                for (var i = 0; i < r.scheduleList.Count; i++)
+                {
+                    if (dateMagLes == r.scheduleList[i].date)
+                    {
+                        ListViewItem classhoursListViewItem = new ListViewItem(r.scheduleList[i].classhours);
+                        ListViewItem groupListViewItem = new ListViewItem(r.scheduleList[i].group);
+                        ListViewItem audienceListViewItem = new ListViewItem(r.scheduleList[i].audience);
+                        ListViewItem subjectListViewItem = new ListViewItem(r.scheduleList[i].subject);
+
+                        classhoursListViewItem.SubItems.Add(r.scheduleList[i].group);
+                        classhoursListViewItem.SubItems.Add(r.scheduleList[i].audience);
+                        classhoursListViewItem.SubItems.Add(r.scheduleList[i].subject);
+
+                        listViewMagEdu.Items.AddRange(new ListViewItem[] { classhoursListViewItem });
+                    }
+                }
+                listViewMagEdu.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            }
+        }
+
+        private async void ToolStripMenuItemMagEduPersSch_Click(object sender, EventArgs e)
+        {
+            app.Visible = false;
+
+            progressBar1.Visible = true;
+            progressBar1.Value = 0;
+
+            notificationMagFromJson = MethodsClassMagEdu.JsonParseDesMagEdu(jsonMagistrEdu);
+
+            var progress = new Progress<int>(x => progressBar1.Value = x);
+            await System.Threading.Tasks.Task.Run(() => MethodsClassMagEdu.CreatePersonalScheduleMagEdu(app, notificationMagFromJson, progress));
+            progressBar1.Value = 100;
         }
     }         
 }
