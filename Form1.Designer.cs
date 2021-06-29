@@ -43,7 +43,7 @@ namespace ScheduleParse
             this.ToolStripMenuItemExtraEduPersSch = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemMagEdu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listViewScheduleTeacher = new System.Windows.Forms.ListView();
@@ -148,7 +148,7 @@ namespace ScheduleParse
             this.расписаниеПреподовToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CreatePersonalScheduleToolStripMenuItem,
             this.toolStripSeparator1,
-            this.открытьToolStripMenuItem});
+            this.OpenFolderToolStripMenuItem});
             this.расписаниеПреподовToolStripMenuItem.Name = "расписаниеПреподовToolStripMenuItem";
             this.расписаниеПреподовToolStripMenuItem.Size = new System.Drawing.Size(176, 20);
             this.расписаниеПреподовToolStripMenuItem.Text = "Расписание преподавателей";
@@ -166,21 +166,21 @@ namespace ScheduleParse
             // ToolStripMenuItemFullTimeEduPersSch
             // 
             this.ToolStripMenuItemFullTimeEduPersSch.Name = "ToolStripMenuItemFullTimeEduPersSch";
-            this.ToolStripMenuItemFullTimeEduPersSch.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemFullTimeEduPersSch.Size = new System.Drawing.Size(161, 22);
             this.ToolStripMenuItemFullTimeEduPersSch.Text = "Очная форма";
             this.ToolStripMenuItemFullTimeEduPersSch.Click += new System.EventHandler(this.ToolStripMenuItemFullTimeEduPersSch_Click);
             // 
             // ToolStripMenuItemExtraEduPersSch
             // 
             this.ToolStripMenuItemExtraEduPersSch.Name = "ToolStripMenuItemExtraEduPersSch";
-            this.ToolStripMenuItemExtraEduPersSch.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemExtraEduPersSch.Size = new System.Drawing.Size(161, 22);
             this.ToolStripMenuItemExtraEduPersSch.Text = "Заочная форма";
             this.ToolStripMenuItemExtraEduPersSch.Click += new System.EventHandler(this.ToolStripMenuItemExtraEduPersSch_Click);
             // 
             // ToolStripMenuItemMagEdu
             // 
             this.ToolStripMenuItemMagEdu.Name = "ToolStripMenuItemMagEdu";
-            this.ToolStripMenuItemMagEdu.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMagEdu.Size = new System.Drawing.Size(161, 22);
             this.ToolStripMenuItemMagEdu.Text = "Магистратура";
             this.ToolStripMenuItemMagEdu.Click += new System.EventHandler(this.ToolStripMenuItemMagEduPersSch_Click);
             // 
@@ -189,12 +189,12 @@ namespace ScheduleParse
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
-            // открытьToolStripMenuItem
+            // OpenFolderToolStripMenuItem
             // 
-            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.открытьToolStripMenuItem.Text = "Открыть папку";
-            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
+            this.OpenFolderToolStripMenuItem.Name = "OpenFolderToolStripMenuItem";
+            this.OpenFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenFolderToolStripMenuItem.Text = "Открыть папку";
+            this.OpenFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenFolderToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -683,7 +683,7 @@ namespace ScheduleParse
         public System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateGeneralSchedule;
         public System.Windows.Forms.DateTimePicker dateTimePicker1;
         public System.Windows.Forms.ListView listViewScheduleTeacher;
-        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFullTimeEduPersSch;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExtraEduPersSch;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMagEdu;

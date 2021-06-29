@@ -22,12 +22,9 @@ namespace ScheduleParse
         List<NotificationFullTimeFromJson> notificationFullTimeFromJson = new List<NotificationFullTimeFromJson>();
         List<NotificationMagisterExtraEduFromJson> notificationExtraFromJson = new List<NotificationMagisterExtraEduFromJson>();
         List<NotificationMagisterFromJson> notificationMagFromJson = new List<NotificationMagisterFromJson>();
-
-       
-
-        string jsonFullTimeEdu = "jsonFullTimeEdu";
-        string jsonExtraStudEdu = "jsonExtraStudEdu";
-        string jsonMagistrEdu = "jsonMagistrEdu";
+        readonly string jsonFullTimeEdu = "jsonFullTimeEdu";
+        readonly string jsonExtraStudEdu = "jsonExtraStudEdu";
+        readonly string jsonMagistrEdu = "jsonMagistrEdu";
 
 
         public Form1()
@@ -131,8 +128,10 @@ namespace ScheduleParse
 
         private async void toolStripMenuItemCreateGeneralSchedule_Click(object sender, EventArgs e)
         {
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-            app.Visible = true;
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
+            {
+                Visible = true
+            };
             progressBar1.Visible = true;
 
             progressBar1.Value = 0;
@@ -187,8 +186,10 @@ namespace ScheduleParse
 
         private async void ToolStripMenuItemFullTimeEduPersSch_Click(object sender, EventArgs e)
         {
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-            app.Visible = false;
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
+            {
+                Visible = false
+            };
 
             progressBar1.Visible = true;
             progressBar1.Value = 0;
@@ -245,8 +246,10 @@ namespace ScheduleParse
         }
         private async void ToolStripMenuItemExtraEduPersSch_Click(object sender, EventArgs e)
         {
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-            app.Visible = false;
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
+            {
+                Visible = false
+            };
 
             progressBar1.Visible = true;
             progressBar1.Value = 0;
@@ -303,8 +306,10 @@ namespace ScheduleParse
 
         private async void ToolStripMenuItemMagEduPersSch_Click(object sender, EventArgs e)
         {
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-            app.Visible = false;
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application
+            {
+                Visible = false
+            };
 
             progressBar1.Visible = true;
             progressBar1.Value = 0;
@@ -317,11 +322,17 @@ namespace ScheduleParse
             app.Quit();
         }
 
-        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
+            string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
 
              string pathSavePrepods = pathOutput + @"Преподаватели\";
+
+            DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepods);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
 
             System.Diagnostics.Process.Start(pathSavePrepods);
         }

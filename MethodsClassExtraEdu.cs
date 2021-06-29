@@ -16,13 +16,13 @@ namespace ScheduleParse
 {
     public static class MethodsClassExtraEdu
     {
-        static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
-        static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
+        static readonly string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
+        static readonly string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
 
-        static string pathSavePrepods = pathOutput + @"Преподаватели\";
-        static string pathSavePrepodsExtraEdu = pathSavePrepods + @"Заочная форма обучения\";
+        static readonly string pathSavePrepods = pathOutput + @"Преподаватели\";
+        static readonly string pathSavePrepodsExtraEdu = pathSavePrepods + @"Заочная форма обучения\";
 
-        static string pathSaveJSON = path + @"json\";
+        static readonly string pathSaveJSON = path + @"json\";
 
         static string newFileName = String.Empty;
 
@@ -189,7 +189,10 @@ namespace ScheduleParse
 
             foreach (var item in notificationExtraEduFromJson)
             {
-                form.comboBoxExtraEdu.Items.Add(item.teacher.fullname.ToString());
+                if (!form.comboBoxExtraEdu.Items.Contains(item.teacher.fullname.ToString()))
+                {
+                    form.comboBoxExtraEdu.Items.Add(item.teacher.fullname.ToString());
+                }
             }
             form.comboBoxExtraEdu.Enabled = true;
             form.comboBoxExtraEdu.SelectedItem = form.comboBoxExtraEdu.Items[0];

@@ -16,12 +16,12 @@ namespace ScheduleParse
 {
     class MethodsClassMagEdu
     {
-        static string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
-        static string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
+        static readonly string path = System.Windows.Forms.Application.StartupPath + @"\documents\";
+        static readonly string pathOutput = System.Windows.Forms.Application.StartupPath + @"\outputDocuments\";
 
-        static string pathSavePrepods = pathOutput + @"Преподаватели\";     
-        static string pathSavePrepodsMagistr = pathSavePrepods + @"Магистратура\";
-        static string pathSaveJSON = path + @"json\";
+        static readonly string pathSavePrepods = pathOutput + @"Преподаватели\";     
+        static readonly string pathSavePrepodsMagistr = pathSavePrepods + @"Магистратура\";
+        static readonly string pathSaveJSON = path + @"json\";
 
         static string newFileName = String.Empty;
 
@@ -188,7 +188,10 @@ namespace ScheduleParse
 
             foreach (var item in notificationMagEduFromJson)
             {
-                form.comboBoxMagEdu.Items.Add(item.teacher.fullname.ToString());
+                if (!form.comboBoxMagEdu.Items.Contains(item.teacher.fullname.ToString()))
+                {
+                    form.comboBoxMagEdu.Items.Add(item.teacher.fullname.ToString());
+                }
             }
             form.comboBoxMagEdu.Enabled = true;
             form.comboBoxMagEdu.SelectedItem = form.comboBoxMagEdu.Items[0];
