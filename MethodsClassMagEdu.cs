@@ -180,10 +180,16 @@ namespace ScheduleParse
                 WriteIndented = true
             };
 
+            var writePathJSON = pathSaveJSON + formEdu + ".txt";
+
             if (notificationsMag.Count != 0)
             {
+                //if (File.Exists(writePathJSON))
+                //{
+                //    File.Delete(writePathJSON);
+                //}
 
-                    var json = JsonSerializer.Serialize(notificationsMag, options);
+                var json = JsonSerializer.Serialize(notificationsMag, options);
 
                 DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
                 if (!dirInfo.Exists)
@@ -191,7 +197,6 @@ namespace ScheduleParse
                     dirInfo.Create();
                 }
 
-                var writePathJSON = pathSaveJSON + formEdu + ".txt";
 
                 try
                 {

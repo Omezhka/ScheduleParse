@@ -79,6 +79,8 @@ namespace ScheduleParse
                 CreateNotificationsFullTimeEdu(izv, notifications, progress);
 
                 SettingsFieldNotificationsFullTimeEdu(notifications);
+
+                app.Quit();
             }
         }
 
@@ -187,7 +189,16 @@ namespace ScheduleParse
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
                 WriteIndented = true
             };
+            
+            var writePathJSON = pathSaveJSON + formEdu + ".txt";
+
             if (notifications.Count != 0) {
+
+                //if (File.Exists(writePathJSON))
+                //{
+                //    File.Delete(writePathJSON);
+                //}
+
                 var json = JsonSerializer.Serialize(notifications, options);
 
                 DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
@@ -196,8 +207,7 @@ namespace ScheduleParse
                     dirInfo.Create();
                 }
 
-                var writePathJSON = pathSaveJSON + formEdu + ".txt";
-
+                
                 try
                 {
                     using (StreamWriter sw = new StreamWriter(writePathJSON, false, System.Text.Encoding.Default))
@@ -357,6 +367,8 @@ namespace ScheduleParse
             oPara2.Range.Font.Name = "Times New Roman";
             //oPara2.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
             oPara2.Range.Text = saveFooterDocFullTimeEdu;
+
+           
             
         }
 

@@ -76,6 +76,7 @@ namespace ScheduleParse
 
         private async void toolStripMenuItemFullTimeEdu_Click(object sender, EventArgs e)
         {
+            izv.Clear();
             var filePath = MethodsGeneralClass.LoadFiles();
             List<NotificationFullTimeEdu> notifications = new List<NotificationFullTimeEdu>();
 
