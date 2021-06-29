@@ -70,8 +70,8 @@ namespace ScheduleParse
 
                 headerDocForGeneralSchedule = (izv[2].Trim() + " " + izv[3].Trim()).Replace("расписания Ваших занятий", String.Empty).ToUpper();
 
-                MessageBox.Show(headerDocFullTimeEdu);
-                MessageBox.Show(headerDocForGeneralSchedule);
+                //MessageBox.Show(headerDocFullTimeEdu);
+                //MessageBox.Show(headerDocForGeneralSchedule);
 
                 File.WriteAllText(path + "saveHeaderDocFullTimeEdu.txt", headerDocFullTimeEdu);
                 File.WriteAllText(path + "saveheaderDocForGeneralSchedule.txt", headerDocForGeneralSchedule);
@@ -178,7 +178,7 @@ namespace ScheduleParse
                 FillingComboBoxFullTimeEdu(JsonParseDesFullTimeEdu(formEdu), formEdu, form);
             } else
             {
-                MessageBox.Show("Вы не выбрали ни одного файла!",notifications.Count.ToString());
+                MessageBox.Show("Вы не выбрали ни одного файла!");
             }
 
 
@@ -458,13 +458,12 @@ namespace ScheduleParse
 
                 if (notificationFullTimeFromJson[c].scheduleList[k].Week)
                 {
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"чет:"} {notificationFullTimeFromJson[c].teacher.fullname } " +
-                                                                                                     $"{notificationFullTimeFromJson[c].scheduleList[k].group } " +
+                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"чет:"} " +                                                                                                     $"{notificationFullTimeFromJson[c].scheduleList[k].group } " +
                                                                                                      $"{"a." + notificationFullTimeFromJson[c].scheduleList[k].audience }\r\n");
                 }
                 else
                 {
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"нечет:"} {notificationFullTimeFromJson[c].teacher.fullname } " +
+                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{"нечет:"} " +
                                                                                                      $"{notificationFullTimeFromJson[c].scheduleList[k].group } " +
                                                                                                      $"{"a." + notificationFullTimeFromJson[c].scheduleList[k].audience }\r\n");
                 }

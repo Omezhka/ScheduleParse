@@ -373,7 +373,7 @@ namespace ScheduleParse
                 tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
 
                 
-                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{notificationExtraEduFromJson[c].scheduleList[k].date} {notificationExtraEduFromJson[c].teacher.fullname } " +
+                    tbltst.Cell(indexClasshoursPosition + 2, indexDayPosition + 2).Range.InsertAfter($"{notificationExtraEduFromJson[c].scheduleList[k].date} " +
                                                                                                      $"{notificationExtraEduFromJson[c].scheduleList[k].group } " +
                                                                                                      $"{"a." + notificationExtraEduFromJson[c].scheduleList[k].audience }\r\n");
                 

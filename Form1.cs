@@ -67,8 +67,8 @@ namespace ScheduleParse
             }
             else
             {
-                comboBoxExtraEdu.Text = "Не загружено расписание";
-                comboBoxExtraEdu.Enabled = false;
+                comboBoxMagEdu.Text = "Не загружено расписание";
+                comboBoxMagEdu.Enabled = false;
             }
 
         }
