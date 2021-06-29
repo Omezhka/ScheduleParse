@@ -121,25 +121,60 @@ namespace ScheduleParse
             var regHeader = new Regex(Pattern.header);
             int i = 0;
 
+            int footerIndex = 0;
+            var izvItem = new List<string>();
+
             while (i < izv.Count)
             {
                 if (regHeader.IsMatch(izv[i]))
                 {
                     var izvHeaderCathedra = regHeader.Match(izv[i]).Groups["cathedra"].ToString(); // берём название кафедры из заголовка
-                    var izvItem = new List<string>();
-                    while (!izv[i].Contains("ОУП и ККО"))
-                    {
-                        izvItem.Add(izv[i]);
-                        i++;
-                    }
+                    
+                    
                     if (izvHeaderCathedra == "Информационных технологий и за") // сравниваем название кафедры с нужной, и если совпало - добавляем в список распарщеных извещений
                     {
+                        izvItem.Clear();
+                        while (!izv[i].Contains("ОУП и ККО"))
+                        {
+                            izvItem.Add(izv[i]);
+                            i++;
+                        }
+
                         notifications.Add(new NotificationFullTimeEdu(izvItem));
                     }
                 }
-                i++;
+                i++;   
+
                 progress.Report(i /1498);
-            }            
+            }
+
+            for (var j = izvItem.Count - 1; j > 0; j--)
+            {
+                if (izvItem[j].Contains("----¦"))
+                {
+                    footerIndex = j + 1;
+
+                    break;
+                }
+                //break;
+            }
+
+            if (File.Exists(path + "saveFooterDocFullTimeEdu.txt"))
+            {
+                File.Delete(path + "saveFooterDocFullTimeEdu.txt");
+                for (var j = footerIndex; j <= izvItem.Count - 1; j++)
+                {
+                    File.AppendAllText(path + "saveFooterDocFullTimeEdu.txt", izvItem[j] + "\r\n");
+                }
+
+            } else
+            {
+                for (var j = footerIndex; j <= izvItem.Count - 1; j++)
+                {
+                    File.AppendAllText(path + "saveFooterDocFullTimeEdu.txt", izvItem[j] + "\r\n");
+                }
+            }
+           
         }
 
         /// <summary>
@@ -152,7 +187,7 @@ namespace ScheduleParse
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
                 WriteIndented = true
             };
-            if(notifications.Count != 0) {
+            if (notifications.Count != 0) {
                 var json = JsonSerializer.Serialize(notifications, options);
 
                 DirectoryInfo dirInfo = new DirectoryInfo(pathSaveJSON);
@@ -180,10 +215,11 @@ namespace ScheduleParse
             {
                 MessageBox.Show("Вы не выбрали ни одного файла!");
             }
-
-
         }
 
+        /// <summary>
+        /// Заполнение comboBox
+        /// </summary>
         static public void FillingComboBoxFullTimeEdu(List<NotificationFullTimeFromJson> notificationFullTimeFromJson, string formEdu, Form1 form)
         {
 
@@ -206,7 +242,10 @@ namespace ScheduleParse
             else form.label2.Text = "-";
            
         }
-
+        
+        /// <summary>
+        /// Десериализация
+        /// </summary>
         public static List<NotificationFullTimeFromJson> JsonParseDesFullTimeEdu(string formEdu)
         {
             List<NotificationFullTimeFromJson> notificationFullTimeFromJson = new List<NotificationFullTimeFromJson>();
@@ -234,11 +273,13 @@ namespace ScheduleParse
             PageSetupOrientational(docTable);
             // тут какие-то замуты с параграфами, я не до конца выкупила, но если строчку ниже убрать,
             // то таблица принимает стили текста перед таблицей 
+            
             docTable.Paragraphs.Add();
 
             Range rng = docTable.Paragraphs[1].Range;
-            var headerDocForGeneralSchedule = File.ReadAllText(path + "saveheaderDocForGeneralSchedule.txt", Encoding.UTF8);
 
+            var headerDocForGeneralSchedule = File.ReadAllText(path + "saveheaderDocForGeneralSchedule.txt", Encoding.UTF8);
+            var saveFooterDocFullTimeEdu = File.ReadAllText(path + "saveFooterDocFullTimeEdu.txt", Encoding.UTF8);
             rng.InsertBefore("РАСПИСАНИЕ ЗАНЯТИЙ ПРЕПОДАВАТЕЛЕЙ КАФЕДРЫ " +
                 "ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ И ЗАЩИТЫ ИНФОРМАЦИИ " +
                 headerDocForGeneralSchedule);
@@ -302,8 +343,21 @@ namespace ScheduleParse
                     }
                     
                 }
+                
                 progress.Report(i*4);
             }
+
+            object oEndOfDoc = "\\endofdoc";
+            Microsoft.Office.Interop.Word.Paragraph oPara2;
+           
+            object oRng = docTable.Bookmarks.get_Item(ref oEndOfDoc).Range;
+            oPara2 = docTable.Content.Paragraphs.Add(ref oRng);
+
+            oPara2.Range.Font.Size = 9;
+            oPara2.Range.Font.Name = "Times New Roman";
+            //oPara2.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+            oPara2.Range.Text = saveFooterDocFullTimeEdu;
+            
         }
 
         /// <summary>
@@ -332,7 +386,7 @@ namespace ScheduleParse
         {
             //app.Visible = false;
             List<string> classhours = Classhours();
-
+            var saveFooterDocFullTimeEdu = File.ReadAllText(path + "saveFooterDocFullTimeEdu.txt", Encoding.UTF8);
             int c = 0;
 
             if (c <= notificationFullTimeFromJson.Count)
@@ -375,19 +429,35 @@ namespace ScheduleParse
                     InsertFirstColumnInTable(classhours, tbltst);
 
                     InsertDataInPersonalTeacherSchedule(notificationFullTimeFromJson, classhours, c, tbltst);
+
+                    object oEndOfDoc = "\\endofdoc";
+                    Microsoft.Office.Interop.Word.Paragraph oPara2;
+
+                    object oRng = teacherScheduleTable.Bookmarks.get_Item(ref oEndOfDoc).Range;
+                    oPara2 = teacherScheduleTable.Content.Paragraphs.Add(ref oRng);
+
+                    oPara2.Range.Font.Size = 9;
+                    oPara2.Range.Font.Name = "Times New Roman";
+                    //oPara2.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                    oPara2.Range.Text = saveFooterDocFullTimeEdu;
+
                     DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepodsFullTimeEdu);
                     if (!dirInfo.Exists)
                     {
                         dirInfo.Create();
                     }
 
-                    teacherScheduleTable.SaveAs2(pathSavePrepodsFullTimeEdu + notificationFullTimeFromJson[c].teacher.fullname + ".docx");
+                    teacherScheduleTable.SaveAs2(pathSavePrepodsFullTimeEdu + notificationFullTimeFromJson[c].teacher.fullname + " очка" + ".docx");
                     progress.Report(c * 4);
                     app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
                     c++;
+
+
                 }
 
             }
+
+           
 
             //app.Quit();
         }
@@ -477,10 +547,5 @@ namespace ScheduleParse
         {
             teacherScheduleTable.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
         }
-
-        
-     
-
-
     }
 }

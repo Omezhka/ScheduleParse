@@ -113,24 +113,57 @@ namespace ScheduleParse
             var regHeader = new Regex(Pattern.headerMagistr);
             int i = 0;
 
+            int footerIndex = 0;
+            var izvItem = new List<string>();
             while (i < izv.Count)
             {
                 if (regHeader.IsMatch(izv[i]))
                 {
                     var izvHeaderCathedra = regHeader.Match(izv[i]).Groups["cathedra"].ToString(); // берём название кафедры из заголовка
-                    var izvItem = new List<string>();
-                    while (!izv[i].Contains("ОУП и ККО"))
-                    {
-                        izvItem.Add(izv[i]);
-                        i++;
-                    }
+                    
+                    
                     if (izvHeaderCathedra == "Информационных технологий и за") // сравниваем название кафедры с нужной, и если совпало - добавляем в список распарщеных извещений
                     {
+                        izvItem.Clear();
+                        while (!izv[i].Contains("ОУП и ККО"))
+                        {
+                            izvItem.Add(izv[i]);
+                            i++;
+                        }
+
                         notificationsMag.Add(new NotificationMagister(izvItem));
                     }
                 }
                 i++;
                 progress.Report(i / 1498);
+            }
+
+            for (var j = izvItem.Count - 1; j > 0; j--)
+            {
+                if (izvItem[j].Contains("----¦"))
+                {
+                    footerIndex = j + 1;
+
+                    break;
+                }
+                //break;
+            }
+
+            if (File.Exists(path + "saveFooterDocMagEdu.txt"))
+            {
+                File.Delete(path + "saveFooterDocMagEdu.txt");
+                for (var j = footerIndex; j <= izvItem.Count - 1; j++)
+                {
+                    File.AppendAllText(path + "saveFooterDocMagEdu.txt", izvItem[j] + "\r\n");
+                }
+
+            }
+            else
+            {
+                for (var j = footerIndex; j <= izvItem.Count - 1; j++)
+                {
+                    File.AppendAllText(path + "saveFooterDocMagEdu.txt", izvItem[j] + "\r\n");
+                }
             }
         }
 
@@ -247,6 +280,8 @@ namespace ScheduleParse
             List<string> classhours = Classhours();
 
             int c = 0;
+            var saveFooterDocMagEdu = File.ReadAllText(path + "saveFooterDocMagEdu.txt", Encoding.UTF8);
+
 
             if (c <= notificationMagEduFromJson.Count)
             {
@@ -289,12 +324,24 @@ namespace ScheduleParse
 
                     InsertDataInPersonalTeacherSchedule(notificationMagEduFromJson, classhours, c, tbltst);
                     DirectoryInfo dirInfo = new DirectoryInfo(pathSavePrepodsMagistr);
+
+                    object oEndOfDoc = "\\endofdoc";
+                    Microsoft.Office.Interop.Word.Paragraph oPara2;
+
+                    object oRng = teacherScheduleTable.Bookmarks.get_Item(ref oEndOfDoc).Range;
+                    oPara2 = teacherScheduleTable.Content.Paragraphs.Add(ref oRng);
+
+                    oPara2.Range.Font.Size = 9;
+                    oPara2.Range.Font.Name = "Times New Roman";
+                    //oPara2.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                    oPara2.Range.Text = saveFooterDocMagEdu;
+
                     if (!dirInfo.Exists)
                     {
                         dirInfo.Create();
                     }
 
-                    teacherScheduleTable.SaveAs2(pathSavePrepodsMagistr + notificationMagEduFromJson[c].teacher.fullname + ".docx");
+                    teacherScheduleTable.SaveAs2(pathSavePrepodsMagistr + notificationMagEduFromJson[c].teacher.fullname +" магистратура" + ".docx");
                     progress.Report(c * 3);
                     app.ActiveDocument.Close(WdSaveOptions.wdDoNotSaveChanges);
                     c++;
