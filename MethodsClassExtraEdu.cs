@@ -124,6 +124,7 @@ namespace ScheduleParse
                     
                     if (izvHeaderCathedra == "Информационных технологий и за") // сравниваем название кафедры с нужной, и если совпало - добавляем в список распарщеных извещений
                     {
+                        izvItem.Clear();
                         while (!izv[i].Contains("ОУП и ККО"))
                         {
                             izvItem.Add(izv[i]);
